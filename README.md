@@ -1,2 +1,2 @@
-# til
+# TIL
 :memo: Today I Learned
