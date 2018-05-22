@@ -14,4 +14,4 @@ Here we run the deschduler cron job explicitly by created a Job named `deschdule
 
 #### Note:
 
-This syntax will work with `kubectl v1.10.1+`. It is test on Kubernetes v1.8.7. 
+This syntax will work with `kubectl v1.10.1+`. It is tested on Kubernetes v1.8.7. 
