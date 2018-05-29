@@ -1,7 +1,7 @@
 # How to explicitly schedule a kubernetes cronjob 
 
 ## Problem
-We have defined a cron job in kubernetes which runs after a specific time interval, but at some point we need to explicilty schedule the job.
+We have defined a cron job in kubernetes which runs after a specific time interval, but at some point we need to explicitly schedule the job.
 
 ## Solution
 Create a `Job` from the existing `CronJob` using the following command.
