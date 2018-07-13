@@ -46,7 +46,7 @@ For parsing you need to use a parser filter like so inside the @LOGS label:
         <parse>
             @type regexp
             expression full-multiline-regex
-            time_format logs-time-format %Y-%m-%d %H:%M:%S.%L
+            time_format logs-time-format
         </parse>
     </filter>
 </label>
