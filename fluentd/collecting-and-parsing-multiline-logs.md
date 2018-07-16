@@ -63,3 +63,26 @@ For java spring multiline logs, the multiline regex will be
 ```
 
 And the time_format will be `%Y-%m-%d %H:%M:%S.%L`
+
+## Configuring apps for fluentd to handle its logs
+
+In our cluster, we've setup fluentd in such a way that it accepts custom fluentd configuration from deployments, statefulsets, and daemonsets. In ordewr for fluentd to parse multiline logs of a certain app that is deployed, you need to add the following annotation to its resource and fluentd will pick it up and parse inner logs
+
+```yaml
+fluentdConfiguration: >
+    [
+        {
+        "containers":
+            [
+                {
+                "expressionFirstLine": "{{ .regexFirstLine }}",
+                "expression": "{{ .regex }}",
+                "timeFormat": "{{ .timeFormat }}",
+                "containerName": "spring-boot"
+                }
+            ]
+        }
+    ]
+```
+
+Where `expressionFirstLine` is the regex used to concatenate logs that are split up, and `expression` is the regex used for parsing internal log of the application.
