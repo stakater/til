@@ -1,6 +1,6 @@
 # Running Kube-State-Metrics
 
-For running Kube-State-Metrics and accessing them via Prometheus, you can check the manifests from [https://github.com/kubernetes/kube-state-metrics/tree/master/kubernetes] . Or if deploying through helm, check our repository https://github.com/stakater/chart-openshift-kube-state-metrics for openshift or for Vanilla Kubernetes https://github.com/stakater/chart-kube-state-metrics .
+For running Kube-State-Metrics and accessing them via Prometheus, you can check the manifests from [Kubernetes Manifests](https://github.com/kubernetes/kube-state-metrics/tree/master/kubernetes) . Or if deploying through helm, check the repository [chart-openshift-kube-state-metrics](https://github.com/stakater/chart-openshift-kube-state-metrics) for openshift or for Vanilla Kubernetes [chart-kube-state-metrics](https://github.com/stakater/chart-kube-state-metrics) .
 
 ## TroubleShooting
 
