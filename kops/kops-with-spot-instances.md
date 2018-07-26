@@ -18,13 +18,53 @@ https://github.com/kubernetes/kops/issues/3605
 We need to add this hook cluster config:
 
 ```
-- name: ensure-aws-tags.service
-  manifest: |
-    Type=oneshot
-    ExecStart=/usr/bin/docker run --net host --restart no quay.io/sergioballesteros/check-aws-tags
-    ExecStartPost=/bin/systemctl restart kubelet.service
-  requires:
-  - docker.service
-  roles:
-  - Node
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: apps187.digitaldealer.devtest.aws.scania.com
+  name: logging-nodes
+spec:
+  associatePublicIp: false
+  image: ami-a61464df
+  machineType: t2.2xlarge
+  maxPrice: "0.4032"
+  maxSize: 6
+  minSize: 3
+  nodeLabels:
+    kops.k8s.io/instancegroup: logging-nodes
+  taints:
+  - dedicated=logging:NoSchedule
+  role: Node
+  rootVolumeSize: 50
+  subnets:
+  - eu-west-1a
+  - eu-west-1b
+  - eu-west-1c
+  hooks:
+    - name: disable-automatic-updates.service
+      before:
+      - update-engine.service
+      manifest: |
+        Type=oneshot
+        ExecStartPre=/usr/bin/systemctl mask --now update-engine.service
+        ExecStartPre=/usr/bin/systemctl mask --now locksmithd.service
+        ExecStart=/usr/bin/systemctl reset-failed update-engine.service
+    - name: ensure-aws-tags.service
+      manifest: |
+        Type=oneshot
+        ExecStart=/usr/bin/docker run --net host --restart no quay.io/sergioballesteros/check-aws-tags
+        ExecStartPost=/bin/systemctl restart kubelet.service
+      requires:
+      - docker.service
+      roles:
+      - Node
+  kubelet:
+    enforceNodeAllocatable: pods
+    kubeReserved:
+      cpu: 500m
+      memory: 2Gi
+    systemReserved:
+      cpu: 500m
+      memory: 2Gi
 ```
