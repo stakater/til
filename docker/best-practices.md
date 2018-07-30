@@ -1,4 +1,4 @@
-# Best Practices
+# Docker Best Practices
 
 Some docker specific best practices.
 
@@ -89,7 +89,12 @@ Many images use wrapper scripts to do some setup before starting a process for t
 
 Say that you have a wrapper script that starts a process for a server of some kind. You start your container (using docker run -i), which runs the wrapper script, which in turn starts your process. Now say that you want to kill your container with CTRL+C. If your wrapper script used exec to start the server process, docker will send SIGINT to the server process, and everything will work as you expect. If you didn’t use exec in your wrapper script, docker will send SIGINT to the process for the wrapper script - and your process will keep running like nothing happened.
 
+Also note that your process runs as PID 1 when running in a container. This means that if your main process terminates, the entire container is stopped, killing any child processes you may have launched from your PID 1 process.
+
+## Use LABEL maintainer
+
+The LABEL maintainer instruction sets the Author field of the image. This is useful for providing an email contact for your users if they have questions for you.
+
 ## References
 
 - http://www.projectatomic.io/docs/docker-image-author-guidance/
-- 
