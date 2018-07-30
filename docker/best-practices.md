@@ -53,3 +53,43 @@ Images should use a Docker volume for persistent data. This way Kubernetes mount
 All data that needs to be preserved even after the container is destroyed must be written to a volume. With Docker 1.5, there will be a readonly flag for containers which can be used to strictly enforce good practices about not writing data to ephemeral storage in a container. Designing your image around that capability now will make it easier to take advantage of it later.
 
 Furthermore, explicitly defining volumes in your Dockerfile makes it easy for consumers of the image to understand what volumes they need to define when running your image.
+
+## Always EXPOSE Important Ports
+
+The EXPOSE instruction makes a port in the container available to the host system and other containers. While it is possible to specify that a port should be exposed with a docker run invocation, using the EXPOSE instruction in a Dockerfile makes it easier for both humans and software to use your image by explicitly declaring the ports your software needs to run:
+
+- Exposed ports will show up under docker ps associated with containers created from your image
+- Exposed ports will also be present in the metadata for your image returned by docker inspect
+- Exposed ports will be linked when you link one container to another
+
+## Use USER
+
+By default docker containers run as root. A docker container running as root has full control of the host system. As docker matures, more secure default options may become available. For now, requiring root is dangerous for others and may not be available in all environments. Your image should use the USER instruction to specify a non-root user for containers to run as. If your software does not create its own user, you can create a user and group in the Dockerfile as follows:
+
+```
+RUN groupadd -r swuser -g 433 && \
+useradd -u 431 -r -g swuser -d <homedir> -s /sbin/nologin -c "Docker image user" swuser && \
+chown -R swuser:swuser <homedir>
+```
+
+### Reusing an Image with a Non-root User
+The default user in a Dockerfile is the user of the parent image. For example, if your image is derived from an image that uses a non-root user swuser, then RUN commands in your Dockerfile will run as swuser.
+
+If you need to run as root, you should change the user to root at the beginning of your Dockerfile then change back to the correct user with another USER instruction:
+
+```
+USER root
+RUN yum install -y <some package>
+USER swuser
+```
+
+## Always exec in Wrapper Scripts
+
+Many images use wrapper scripts to do some setup before starting a process for the software being run. It is important that if your image uses such a script, that script should use exec so that the script’s process is replaced by your software. If you do not use exec, then signals sent by docker will go to your wrapper script instead of your software’s process. This is not what you want - as illustrated by the following example:
+
+Say that you have a wrapper script that starts a process for a server of some kind. You start your container (using docker run -i), which runs the wrapper script, which in turn starts your process. Now say that you want to kill your container with CTRL+C. If your wrapper script used exec to start the server process, docker will send SIGINT to the server process, and everything will work as you expect. If you didn’t use exec in your wrapper script, docker will send SIGINT to the process for the wrapper script - and your process will keep running like nothing happened.
+
+## References
+
+- http://www.projectatomic.io/docs/docker-image-author-guidance/
+- 
