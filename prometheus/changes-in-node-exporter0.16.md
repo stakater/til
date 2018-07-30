@@ -22,3 +22,4 @@ node_filesystem_size  | node_filesystem_size_bytes |
 node_filesystem_free  | node_filesystem_free_bytes |
 node_network_receive_bytes | node_network_receive_bytes_total |
 node_network_transmit_bytes | node_network_transmit_bytes_total |
+kube_pod_container_status_restarts | kube_pod_container_status_restarts_total |
