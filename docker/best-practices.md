@@ -95,6 +95,29 @@ Also note that your process runs as PID 1 when running in a container. This mean
 
 The LABEL maintainer instruction sets the Author field of the image. This is useful for providing an email contact for your users if they have questions for you.
 
+## Clean Temporary Files
+
+All temporary files you create during the build process should be removed. This also includes any files added with the ADD command. For example, we strongly recommended that you run the yum clean command after performing yum install operations.
+
+You can prevent the yum cache from ending up in an image layer by creating your RUN statement as follows:
+
+```
+RUN yum -y install mypackage && yum -y install myotherpackage && yum clean all -y
+```
+
+Note that if you instead write:
+
+```
+RUN yum -y install mypackage
+RUN yum -y install myotherpackage && yum clean all -y
+```
+
+Then the first yum invocation leaves extra files in that layer, and these files cannot be removed when the yum clean operation is run later. The extra files are not visible in the final image, but they are present in the underlying layers.
+
+The current Docker build process does not allow a command run in a later layer to shrink the space used by the image when something was removed in an earlier layer. However, this may change in the future. This means that if you perform an rm command in a later layer, although the files are hidden it does not reduce the overall size of the image to be downloaded. Therefore, as with the yum clean example, it is best to remove files in the same command that created them, where possible, so they do not end up written to a layer.
+
+In addition, performing multiple commands in a single RUN statement reduces the number of layers in your image, which improves download and extraction time.
+
 ## References
 
 - http://www.projectatomic.io/docs/docker-image-author-guidance/
