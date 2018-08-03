@@ -95,6 +95,85 @@ Also note that your process runs as PID 1 when running in a container. This mean
 
 The LABEL maintainer instruction sets the Author field of the image. This is useful for providing an email contact for your users if they have questions for you.
 
+## Clean Temporary Files
+
+All temporary files you create during the build process should be removed. This also includes any files added with the ADD command. For example, we strongly recommended that you run the yum clean command after performing yum install operations.
+
+You can prevent the yum cache from ending up in an image layer by creating your RUN statement as follows:
+
+```
+RUN yum -y install mypackage && yum -y install myotherpackage && yum clean all -y
+```
+
+Note that if you instead write:
+
+```
+RUN yum -y install mypackage
+RUN yum -y install myotherpackage && yum clean all -y
+```
+
+Then the first yum invocation leaves extra files in that layer, and these files cannot be removed when the yum clean operation is run later. The extra files are not visible in the final image, but they are present in the underlying layers.
+
+The current Docker build process does not allow a command run in a later layer to shrink the space used by the image when something was removed in an earlier layer. However, this may change in the future. This means that if you perform an rm command in a later layer, although the files are hidden it does not reduce the overall size of the image to be downloaded. Therefore, as with the yum clean example, it is best to remove files in the same command that created them, where possible, so they do not end up written to a layer.
+
+In addition, performing multiple commands in a single RUN statement reduces the number of layers in your image, which improves download and extraction time.
+
+## Complete example including best practices
+
+This is a perfect example from RedHat of a docker image based on best practices
+
+https://github.com/RHsyseng/container-rhel-examples/blob/master/starter-arbitrary-uid/Dockerfile.centos7
+
+```
+FROM centos:centos7
+MAINTAINER Red Hat Systems Engineering <refarch-feedback@redhat.com>
+
+### Atomic/OpenShift Labels - https://github.com/projectatomic/ContainerApplicationGenericLabels
+LABEL name="acme/starter-arbitrary-uid" \
+      maintainer="refarch-feedback@redhat.com" \
+      vendor="Acme Corp" \
+      version="3.7" \
+      release="1" \
+      summary="Acme Corp's Starter app" \
+      description="Starter app will do ....." \
+### Required labels above - recommended below
+      url="https://www.acme.io" \
+      run='docker run -tdi --name ${NAME} \
+      -u 123456 \
+      ${IMAGE}' \
+      io.k8s.description="Starter app will do ....." \
+      io.k8s.display-name="Starter app" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="acme,starter-arbitrary-uid,starter,arbitrary,uid"
+
+### Setup user for build execution and application runtime
+ENV APP_ROOT=/opt/app-root
+ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
+COPY bin/ ${APP_ROOT}/bin/
+RUN chmod -R u+x ${APP_ROOT}/bin && \
+    chgrp -R 0 ${APP_ROOT} && \
+    chmod -R g=u ${APP_ROOT} /etc/passwd
+
+### Containers should NOT run as root as a good practice
+USER 10001
+WORKDIR ${APP_ROOT}
+
+### user name recognition at runtime w/ an arbitrary uid - for OpenShift deployments
+ENTRYPOINT [ "uid_entrypoint" ]
+VOLUME ${APP_ROOT}/logs ${APP_ROOT}/data
+CMD run
+```
+
+## Use Environment Variables for Configuration
+
+Users of your image should be able to configure it without having to create a downstream image based on your image. This means that the runtime configuration should be handled using environment variables. For a simple configuration, the running process can consume the environment variables directly. For a more complicated configuration or for runtimes which do not support this, configure the runtime by defining a template configuration file that is processed during startup. During this processing, values supplied using environment variables can be substituted into the configuration file or used to make decisions about what options to set in the configuration file.
+
+It is also possible and recommended to pass secrets such as certificates and keys into the container using environment variables. This ensures that the secret values do not end up committed in an image and leaked into a Docker registry.
+
+Providing environment variables allows consumers of your image to customize behavior, such as database settings, passwords, and performance tuning, without having to introduce a new layer on top of your image. Instead, they can simply define environment variable values when defining a pod and change those settings without rebuilding the image.
+
+For extremely complex scenarios, configuration can also be supplied using volumes that would be mounted into the container at runtime. However, if you elect to do it this way you must ensure that your image provides clear error messages on startup when the necessary volume or configuration is not present.
+
 ## References
 
 - http://www.projectatomic.io/docs/docker-image-author-guidance/
