@@ -16,3 +16,9 @@ Masquerading rules are set by several components in k8s i.e.:
 - weave
 - kube-proxy
 - docker
+
+Interesting to know that:
+
+IP MASQ == PROXY == NAT Gateway
+
+Nice read: https://www.tldp.org/HOWTO/IP-Masquerade-HOWTO/what-is-masq.html
