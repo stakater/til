@@ -2,7 +2,19 @@
 
 ## dnsmasq
 
+dnsmasq  is  a  lightweight  DNS,  TFTP,  PXE, router advertisement and DHCP server. It is intended to provide coupled DNS and DHCP service to a LAN.
+       
 dnsmasq can also be configured to cache DNS queries for improved DNS lookup speeds to previously visited sites.
+
+Dnsmasq accepts DNS queries and either answers them from a small, local, cache or forwards them  to  a real, recursive, DNS server. It loads the contents of /etc/hosts so that local hostnames which do not appear in the global DNS can  be  resolved  and  also  answers  DNS queries for DHCP configured hosts. It can also act as the authoritative DNS server for one or more domains, allowing local names to appear in the global DNS. It can be configured to do DNSSEC validation.
+
+dnsmasq make dynamic entry in /etc/resolv.conf
+
+### What is DHCP?
+
+DHCP (Dynamic Host Configuration Protocol) is a protocol used to provide quick, automatic, and central management for the distribution of IP addresses within a network.
+
+DHCP is also used to configure the proper subnet mask, default gateway, and DNS server information on the device.
 
 ## What is IP Masquerade?
 
@@ -22,3 +34,13 @@ Interesting to know that:
 IP MASQ == PROXY == NAT Gateway
 
 Nice read: https://www.tldp.org/HOWTO/IP-Masquerade-HOWTO/what-is-masq.html
+
+## What is Network Manager?
+
+Network Manager aims for Network Connectivity which "Just Works". The computer should use the wired network connection when it's plugged in, but automatically switch to a wireless connection when the user unplugs it and walks away from the desk. Likewise, when the user plugs the computer back in, the computer should switch back to the wired connection. The user should, most times, not even notice that their connection has been managed for them; they should simply see uninterrupted network connectivity.
+
+## A vs AAAA record?
+
+An A and AAAA record are actually primary DNS records.  They associate a domain name with a specific IP address, so that when a user types in a web address, such as "www.rackspace.com" their browser knows where to go for the actual website.
+
+The difference between A and AAAA is this: A is IPv4 and AAAA is the current IPv6 record.  Beyond that, there is no difference.  Later on, IPv6 records will be changed to A6 records.
