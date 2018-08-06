@@ -10,3 +10,9 @@ IP Masquerade is a networking function in Linux similar to the one-to-many (1:Ma
 
 MASQ allows a set of machines to invisibly access the Internet via the MASQ gateway. To other machines on the Internet, the outgoing traffic will appear to be from the IP MASQ Linux server itself. In addition to the added functionality, IP Masquerade provides the foundation to create a HEAVILY secured networking environment. With a well built firewall, breaking the security of a well configured masquerading system and internal LAN should be considerably difficult to accomplish.
 
+Masquerading rules are set by several components in k8s i.e.:
+
+- kubelet
+- weave
+- kube-proxy
+- docker
