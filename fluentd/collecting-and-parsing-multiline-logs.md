@@ -86,3 +86,11 @@ fluentdConfiguration: >
 ```
 
 Where `expressionFirstLine` is the regex used to concatenate logs that are split up, and `expression` is the regex used for parsing internal log of the application.
+
+### The need for `containerName`
+
+This is useful when pods have multiple containers running inside them and have different log formats. So it is necessary to specify the `containerName` if there's more than 1 pod, to ensure that the parser only parses that container's logs and not the others.
+
+### Using `timeFormat`
+
+Fluentd parser needs a valid time format for the logs it is parsing. It can be different for every app and can be based on the logging framework you're using for your app. Fluentd's internal time format validator is `strftime`, a popular ruby time parsing library. There's a handy tool that lets your create your own strftime compatible time format for your app logs here which you can use: Shttps://www.foragoodstrftime.com/
