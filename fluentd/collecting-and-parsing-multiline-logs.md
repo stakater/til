@@ -93,4 +93,4 @@ This is useful when pods have multiple containers running inside them and have d
 
 ### Using `timeFormat`
 
-Fluentd parser needs a valid time format for the logs it is parsing. It can be different for every app and can be based on the logging framework you're using for your app. Fluentd's internal time format validator is `strftime`, a popular ruby time parsing library. There's a handy tool that lets your create your own strftime compatible time format for your app logs here which you can use: Shttps://www.foragoodstrftime.com/
+Fluentd parser needs a valid time format for the logs it is parsing. It can be different for every app and can be based on the logging framework you're using for your app. Fluentd's internal time format validator is `strftime`, a popular ruby time parsing library. There's a handy tool that lets your create your own strftime compatible time format for your app logs here which you can use: https://www.foragoodstrftime.com/
