@@ -1,6 +1,11 @@
 # Diagrams
 
-This diagrams have been copied from different places.
+These diagrams have been copied from different places.
+
+## GitOps Pipeline
+With Weave Flux as example
+
+![GitOps Pipeline](e2e-gitops-pipeline.png "GitOps Pipeline")
 
 ## ArgoCD Architecture
 
