@@ -174,6 +174,16 @@ Providing environment variables allows consumers of your image to customize beha
 
 For extremely complex scenarios, configuration can also be supplied using volumes that would be mounted into the container at runtime. However, if you elect to do it this way you must ensure that your image provides clear error messages on startup when the necessary volume or configuration is not present.
 
+## A correct init process
+
+Here's how the Unix process model works. When a system is started, the first process in the system is called the init process, with PID 1. The system halts when this processs halts. If you call `CMD ["/my_app/start.sh"]` in your Dockerfile, then `start.sh` is your init process.
+
+But the init process has an extra responsibility. It inherits all orphaned child processes. It is expected that the init process reaps them.
+
+Most likely, your init process is not doing that at all. As a result your container will become filled with zombie processes over time.
+
+Furthermore, docker stop sends `SIGTERM` to the init process, which is then supposed to stop all services. If your init process is your app, then it'll probably only shut down itself, not all the other processes in the container. The kernel will then forcefully kill those other processes, not giving them a chance to gracefully shut down, potentially resulting in file corruption, stale temporary files, etc. You really want to shut down all your processes gracefully.
+
 ## References
 
 - http://www.projectatomic.io/docs/docker-image-author-guidance/
