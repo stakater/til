@@ -213,6 +213,10 @@ WORKDIR /opt/jboss
 USER jboss
 ```
 
+## Don’t use only the “latest” tag
+
+The latest tag is just like the “SNAPSHOT” for Maven users. Tags are encouraged because of the layered filesytem nature of containers. You don’t want to have surprises when you build your image some months later and figure out that your application can’t run because a parent layer (FROM in Dockerfile) was replaced by a new version that it’s not backward compatible or because a wrong “latest” version was retrieved from the build cache. The “latest” tag should also be avoided when deploying containers in production as you can’t track what version of the image is running.
+
 ## References
 
 - http://www.projectatomic.io/docs/docker-image-author-guidance/
