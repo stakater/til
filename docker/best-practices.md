@@ -184,6 +184,35 @@ Most likely, your init process is not doing that at all. As a result your contai
 
 Furthermore, docker stop sends `SIGTERM` to the init process, which is then supposed to stop all services. If your init process is your app, then it'll probably only shut down itself, not all the other processes in the container. The kernel will then forcefully kill those other processes, not giving them a chance to gracefully shut down, potentially resulting in file corruption, stale temporary files, etc. You really want to shut down all your processes gracefully.
 
+## Don’t use a single layer image
+
+To make effective use of the layered filesystem, always create your own base image layer for your OS, another layer for the username definition, another layer for the runtime installation, another layer for the configuration, and finally another layer for your application. It will be easier to recreate, manage, and distribute your image.
+
+### Example username definition
+
+https://github.com/jboss-dockerfiles/base/blob/master/Dockerfile
+
+```
+FROM centos:7
+MAINTAINER Marek Goldmann <mgoldman@redhat.com>
+
+# Install packages necessary to run EAP
+RUN yum update -y && yum -y install xmlstarlet saxon augeas bsdtar unzip && yum clean all
+
+# Create a user and group used to launch processes
+# The user ID 1000 is the default for the first "regular" user on Fedora/RHEL,
+# so there is a high chance that this ID will be equal to the current user
+# making it easier to use volumes (no permission issues)
+RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss && \
+    chmod 755 /opt/jboss
+
+# Set the working directory to jboss' user home directory
+WORKDIR /opt/jboss
+
+# Specify the user which should be used to execute all commands below
+USER jboss
+```
+
 ## References
 
 - http://www.projectatomic.io/docs/docker-image-author-guidance/
