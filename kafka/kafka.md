@@ -125,3 +125,74 @@ All. Which means all ISRs have to write the message to their log partition.
 
 Kafka chooses the first replica (not necessarily in ISR set) that comes alive as the leader as unclean.leader.election.enable=true is default to support availability.
 
+## What is the relation between kafka and kubernetes
+
+A kubernetes pod represents a consumer listening in a consumer group. 
+
+## Where are the offsets stored by consumers
+
+Each consumer stores the offset it read on a special topic in kafka named `__consumer_offsets`. The step of updating offset on this topic is known as commiting the offset. If a consumer fails before commiting the offset of the last read message, it starts from the last saved offset.
+
+## When can the infinite reading loop occur
+
+There are scenarios where a consumer is killed or is reassigned a partition before it can commit the last read offset. In such cases when a new consumer comes to read data from that partition, it will start from the last saved offset which is always the same as new offset is never commited.
+
+## Causes of consumer rebalance
+
+Rebalance is the scenario where partition is assigned to different consumers in the group. 
+Rebalancing can happen due to 3 main factors.
+
+Assuming we are talking about Kafka 0.10.1.0 or upwards where each consumer instance employs two threads to function. One is user thread from which poll is called; the other is heartbeat thread that specially takes care of heartbeat things.
+
+session.timeout.ms is for heartbeat thread. If coordinator fails to get any heartbeat from a consumer before this time interval elapsed, it marks consumer as failed and triggers a new round of rebalance.
+
+max.poll.interval.ms is for user thread. If message processing logic is too heavy to cost larger than this time interval, coordinator explicitly have the consumer leave the group and also triggers a new round of rebalance.
+
+heartbeat.interval.ms is used to have other healthy consumers aware of the rebalance much faster. If coordinator triggers a rebalance, other consumers will only know of this by receiving the heartbeat response with REBALANCE_IN_PROGRESS exception encapsulated. Quicker the heartbeat request is sent, faster the consumer knows it needs to rejoin the group.
+
+Suggested values:
+session.timeout.ms : a relatively low value, 10 seconds for instance.
+max.poll.interval.ms: based on your processing requirements
+heartbeat.interval.ms: a relatively low value, better 1/3 of the session.timeout.ms
+
+## Heartbeat and Consumer rebalance
+
+The way consumers maintain membership in a consumer group and ownership of the partitions assigned to them is by sending heartbeats to a Kafka broker designated as the group coordinator (this broker can be different for different consumer groups). 
+
+As long as the consumer is sending heartbeats at regular intervals, it is assumed to be alive, well, and processing messages from its partitions. Heartbeats are sent when the
+consumer polls (i.e., retrieves records) and when it commits records it has consumed.
+
+If the consumer stops sending heartbeats for long enough, its session will time out and the group coordinator will consider it dead and trigger a rebalance. If a consumer crashed and stopped processing messages, it will take the group coordinator a few seconds without heartbeats to decide it is dead and trigger the rebalance. During those seconds, no messages will be processed from the partitions owned by the dead consumer. When closing a consumer cleanly, the consumer will notify the group coordinator that it is leaving, and the group coordinator will trigger a rebalance immediately, reducing the gap in processing.
+
+## Does rebalance affects all the topics for a pod?
+
+No, since a pod reads topic after creating a consumer and that consumer becomes a part of a consumer group. In rebalance, the consumer leaves the group and that means the other consumer running in the pod that is reading to other message is not affected by this reshuffle and it will keep on working as expected.
+
+## How to fix infinite consumer rebalancing loop problem
+
+One of the cause of rebalancing is because a consumer cannot finish reading the messages within the max interval. We can fix this issue by increasing the timeout interval property for a consumer and decreasing the total number of records in a poll.
+This change will allow consumers to read to messages within alloted time and commit the offset without reshuffle.
+
+Here are the properties to change for a consumer `max.poll.records` and `max.poll.interval.ms`. Default values for these properties are `500` and `300000` respectively.
+
+## Tips to diagnose the kafka looping issue through logging
+
+- Make sure to log offset and partition on the consumer at listener event.
+
+- Enable debug level logging in your consumer application that you want to debug.
+
+- For the topic partition that is giving errors, go to kafka manager and check if there is lag which shows the messages are not being consumed by the consumer
+
+- Search for the topic in kibana and notice if you see any messages without error. This check will help you determine if all the messages on that partition of that topic is throwing error. To do this you need to search for this query in kibana 
+`kubernetes.namespace_name: "dev" && "offset:" && "lead-v4" && "partition = 1" && "nonScaniaChassisMaintenanceOccasion" -"log:error"`.
+Here `lead-v4` is the app name and `nonScaniaChassisMaintenanceOccasion` is the topic name.
+
+- Search for this query `+"OffsetAndMetadata" +"nonScaniaChassisMaintenanceOccasion-1"` for a pod and an app and you will notice that the commited offset for the topic and partition gets reset after after incrementing 500 times. Which shows that the consumer is stuck in a loop and the offset is resetting. 
+
+- Also in the logs you will notice that you will also find `org.apache.kafka.clients.consumer.CommitFailedException` exception which means the commit of offset was not possible. This exception comes right before rebalance and stops the broker from commited the last read message offset.
+
+- Another keyword that points to this issue is to search for `o.a.k.c.c.internals.ConsumerCoordinator` and `Revoking previously assigned partitions` keywords for your pod which shows partitions are revoked.
+
+- Under `o.a.k.c.c.internals.AbstractCoordinator` look for `(Re-)joining group` which shows the consumer is rejoining the group after reshuffle.
+
+
