@@ -174,4 +174,25 @@ One of the cause of rebalancing is because a consumer cannot finish reading the 
 This change will allow consumers to read to messages within alloted time and commit the offset without reshuffle.
 
 Here are the properties to change for a consumer `max.poll.records` and `max.poll.interval.ms`. Default values for these properties are `500` and `300000` respectively.
-    
+
+## Tips to diagnose the kafka looping issue through logging
+
+- Make sure to log offset and partition on the consumer at listener event.
+
+- Enable debug level logging in your consumer application that you want to debug.
+
+- For the topic partition that is giving errors, go to kafka manager and check if there is lag which shows the messages are not being consumed by the consumer
+
+- Search for the topic in kibana and notice if you see any messages without error. This check will help you determine if all the messages on that partition of that topic is throwing error. To do this you need to search for this query in kibana 
+`kubernetes.namespace_name: "dev" && "offset:" && "lead-v4" && "partition = 1" && "nonScaniaChassisMaintenanceOccasion" -"log:error"`.
+Here `lead-v4` is the app name and `nonScaniaChassisMaintenanceOccasion` is the topic name.
+
+- Search for this query `+"OffsetAndMetadata" +"nonScaniaChassisMaintenanceOccasion-1"` for a pod and an app and you will notice that the commited offset for the topic and partition gets reset after after incrementing 500 times. Which shows that the consumer is stuck in a loop and the offset is resetting. 
+
+5- Also in the logs you will notice that you will also find `org.apache.kafka.clients.consumer.CommitFailedException` exception which means the commit of offset was not possible. This exception comes right before rebalance and stops the broker from commited the last read message offset.
+
+6- Another keyword that points to this issue is to search for `o.a.k.c.c.internals.ConsumerCoordinator` and `Revoking previously assigned partitions` keywords for your pod which shows partitions are revoked.
+
+7- Under `o.a.k.c.c.internals.AbstractCoordinator` look for `(Re-)joining group` which shows the consumer is rejoining the group after reshuffle.
+
+
