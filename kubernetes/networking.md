@@ -44,3 +44,9 @@ Network Manager aims for Network Connectivity which "Just Works". The computer s
 An A and AAAA record are actually primary DNS records.  They associate a domain name with a specific IP address, so that when a user types in a web address, such as "www.rackspace.com" their browser knows where to go for the actual website.
 
 The difference between A and AAAA is this: A is IPv4 and AAAA is the current IPv6 record.  Beyond that, there is no difference.  Later on, IPv6 records will be changed to A6 records.
+
+## Networking Layers
+
+Network connectivity has two main networking layers: 
+- the cluster network for node interaction, and 
+- the software defined network (SDN) for pod interaction.
