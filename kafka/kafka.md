@@ -189,10 +189,10 @@ Here `lead-v4` is the app name and `nonScaniaChassisMaintenanceOccasion` is the 
 
 - Search for this query `+"OffsetAndMetadata" +"nonScaniaChassisMaintenanceOccasion-1"` for a pod and an app and you will notice that the commited offset for the topic and partition gets reset after after incrementing 500 times. Which shows that the consumer is stuck in a loop and the offset is resetting. 
 
-5- Also in the logs you will notice that you will also find `org.apache.kafka.clients.consumer.CommitFailedException` exception which means the commit of offset was not possible. This exception comes right before rebalance and stops the broker from commited the last read message offset.
+- Also in the logs you will notice that you will also find `org.apache.kafka.clients.consumer.CommitFailedException` exception which means the commit of offset was not possible. This exception comes right before rebalance and stops the broker from commited the last read message offset.
 
-6- Another keyword that points to this issue is to search for `o.a.k.c.c.internals.ConsumerCoordinator` and `Revoking previously assigned partitions` keywords for your pod which shows partitions are revoked.
+- Another keyword that points to this issue is to search for `o.a.k.c.c.internals.ConsumerCoordinator` and `Revoking previously assigned partitions` keywords for your pod which shows partitions are revoked.
 
-7- Under `o.a.k.c.c.internals.AbstractCoordinator` look for `(Re-)joining group` which shows the consumer is rejoining the group after reshuffle.
+- Under `o.a.k.c.c.internals.AbstractCoordinator` look for `(Re-)joining group` which shows the consumer is rejoining the group after reshuffle.
 
 
