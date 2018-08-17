@@ -36,6 +36,7 @@ For every PR merge, the following steps will be performs in jenkins build flow:
 - Validate Manifests via [kubeval](https://github.com/garethr/kubeval)
 - Commit generated manifests to repo
 - Push new chart to chart repo
+- Push new chart to flux repos that need that chart
 - Notify the result on JIRA Ticket and Slack
 
 ## Flux Sync
