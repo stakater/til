@@ -46,4 +46,4 @@ Similary, we can create multiple tillers in multiple namespaces, but we would ha
 
 - Everytime when running any command, you would have to explicitly mention the tiller-namespace in every command, and if you miss that, which is likely, it can create in other tiller which can cause unexpected behavior.
 
-- You have a charts e.g. Prometheus, and each of your team wants to deploy it. And suppose it creates a clusterrole named `Prometheus`, so now the issue is when the first team deploys this chart, a ClusterRole will be created named `Prometheus` but when any other team wants to deploy the same chart it will give error, saying `A clusterrole with name Prometheus already exits` failing your release.
+- Managing all your releases can be difficult.
