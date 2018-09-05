@@ -96,3 +96,15 @@ The above Role gives its permissions to create/update/delete any resource only i
 We have explicitly defined verbs as in general, `verbs:["*"]` isn't a good permission to give to any user that isn't a superuser. Giving a [*] verb gives the user escalated permissions and the user can create any clusterrole, which can have any permissions. However giving `["create","update"]` for a (cluster)role it validates that it doesn’t contain any permissions the user doesn’t already have. Actually, the RBAC API prevents users from escalating privileges by editing roles or role bindings. Because this is enforced at the API level, it applies even when the RBAC authorizer is not in use.
 
 A user can only create/update a role if they already have all the permissions contained in the role, at the same scope as the role (cluster-wide for a ClusterRole, within the same namespace or cluster-wide for a Role). For example, if “user-1” does not have the ability to list secrets cluster-wide, they cannot create a ClusterRole containing that permission.
+
+## Issues with above approach
+
+The above seems to be a better approach than giving a cluster-admin role to tiller as it restricts permissions to the tiller user, but still there is an issue as we have given it the access to create, update, delete clusterroles so it can delete a clusterrole that it hasn't created and some other team might have created that, leaving your cluster in a bad state.
+
+But we can't get the ownership of objects and therefore can't work that way as the problem is that Ownership of objects by creator is not tracked or available to the authorization layer for decision making. as Tracking ownership is problematic in a lot of dimensions - exposure of personally identifiable information in API objects, use cases in both directions about whether creation of an object *should* confer special privileges on the object, trustworthiness of the fields storing the creator, potential for misuse of the "created by" data on an object created by a privileged user then heavily modified by an unprivileged one, etc.
+
+What we can do is create an Admission Controller, and validate there, you could look into granting broader RBAC permissions, then restricting writes using a policy admission webhook
+Something like OPA
+https://www.openpolicyagent.org/docs/kubernetes-admission-control.html
+
+You can create an Admission Contoller according to your policies in your org, e.g. i guess one namespace == one team, the authorizer then therefore could check on namespace.
