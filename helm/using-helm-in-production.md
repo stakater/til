@@ -5,7 +5,7 @@ Helm is a Production Ready Chart manager which can be used to define, install, a
 - Tiller: Server side component, it creates a deployment
 - Helm: Client Side component, it is used to communicate to the server and deploy our apps
 
-For tiller, you create a service account, and you can give it permissions according to your needs and deploy things through this.
+For tiller, you create a deployment and correspond a service account to that deployment, and you can give permissions to the service account according to your needs and deploy things through this.
 
 ## Approaches
 
@@ -41,7 +41,7 @@ kubectl apply -f tiller.yaml            # above file
 helm init --service-account tiller      # by default namespace is kube-system, you can specify it by passing a flag --tiller-namespace
 ```
 
-It will create a deployment `tiller-deploy` in kube-system namespace.
+It will create a deployment `tiller-deploy` in kube-system namespace. You can then install any chart through helm and check its releases by `helm ls`
 
 ### Multiple Tillers
 
@@ -89,14 +89,18 @@ helm init --service-account tiller-dev --tiller-namespace dev
 
 It will create a deployment `tiller-deploy` in dev namespace which will only be able to modify its own resources.
 
-In this scenario, there is one missing use case, What if you want to deploy apps like Prometheus that create ClusterRoles or ClusterRoleBindings. You can't do that with this tiller as it is restricted to only `dev` namespace. And if you grant `tiller-dev` service account permisssions to modify clusterroles, so it can change clusterroles which other teams might have created.
+In this scenario, there is one missing use case, What if you want to deploy apps like Prometheus that create ClusterRoles or ClusterRoleBindings. You can't do that with this tiller as it is restricted to only `dev` namespace. And if you grant `tiller-dev` service account extra permisssions to modify clusterroles(bindings), so it can change clusterroles which other teams might have created.
 
 So to overcome this sort of problem, we can have a single global tiller and per namespace tillers. The global tiller will have `cluster-admin` role and can create ClusterRoles or ClusterRoleBindings, so we can use the global tiller to deploy different stacks like Monitoring, Logging, etc or apps that need ClusterRole level permissions, wheras the teams can deploy their specific apps using the namespace specific tiller.
 
-But the question rises that whether the dev user would be able to use the global helm as well as helm for his own namespace? Would user A be able to run both of these commands?
+But the question rises that whether the dev user would be able to use the global helm as well as helm for his own namespace? Would a dev user A be able to run both of these commands?
+
 `helm ls --tiller-namespace dev`
+
 `helm ls --tiller-namespace tiller` ?
 
-So the answer is we will restrict the `tiller` namespace using RBAC, we will only let `cluster-admins` modify it. So in above case, the user A would not have access to `tiller` namespace, so it can't run `helm ls --tiller-namespace tiller`, if user tries it, he would get an error `Error: User "A" cannot list pods in the namespace "tiller": User "A" cannot list pods in project "tiller" (get pods)`
+So the answer is we will restrict the `tiller` namespace using RBAC, we will only let `cluster-admins` modify it. So in above case, the user A would not have access to `tiller` namespace, so it can't run `helm ls --tiller-namespace tiller`, 
+
+if user tries it, he would get an error `Error: User "A" cannot list pods in the namespace "tiller": User "A" cannot list pods in project "tiller" (get pods)`
 
 And he can check his releases through `helm ls --tiller-namespace dev` only.
