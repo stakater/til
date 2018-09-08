@@ -2,7 +2,7 @@
 
 ## What is WebSocket protocol?
 
-
+WebSockets is a bi-directional, full-duplex, persistent connection between a web browser and a server. Once a WebSocket connection is established the connection stays open until the client or server decides to close this connection.
 
 ## A Deeper Look into the SOP and CORS Standard
 
@@ -103,4 +103,4 @@ protocol. STOMP uses different commands like connect, send, subscribe, disconnec
 
 - [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
-- 
+- https://www.baeldung.com/websockets-spring
