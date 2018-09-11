@@ -99,8 +99,16 @@ provide URL to connect with message broker and then get the stomp client to comm
 STOMP is Streaming Text Oriented Messaging Protocol. A STOMP client communicates to a message broker which supports STOMP 
 protocol. STOMP uses different commands like connect, send, subscribe, disconnect etc to communicate. 
 
+## Tools
+
+- SockJS
+- STOMP
+- Spring Boot
+- Apache Kafka
+
 ## References
 
-- [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
+- https://www.youtube.com/watch?v=nxakp15CACY
+- [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - https://www.baeldung.com/websockets-spring
