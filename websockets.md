@@ -111,6 +111,7 @@ protocol. STOMP uses different commands like connect, send, subscribe, disconnec
 - STOMP
 - Spring Boot
 - Apache Kafka
+- WebSockets
 
 ## References
 
