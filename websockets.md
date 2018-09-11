@@ -95,6 +95,10 @@ SockJS is a java script library which provides websocket like object for browser
 compatibility and supports STOMP protocol to communicate with any message broker. SockJS works in the way that we need to 
 provide URL to connect with message broker and then get the stomp client to communicate. 
 
+### Why SockJS?
+
+SockJS lets applications use a WebSocket API but falls back to non-WebSocket alternatives when necessary at runtime, without the need to change application code.
+
 ## STOMP Protocol
 STOMP is Streaming Text Oriented Messaging Protocol. A STOMP client communicates to a message broker which supports STOMP 
 protocol. STOMP uses different commands like connect, send, subscribe, disconnect etc to communicate. 
