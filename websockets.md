@@ -103,8 +103,10 @@ SockJS lets applications use a WebSocket API but falls back to non-WebSocket alt
 STOMP is Streaming Text Oriented Messaging Protocol. A STOMP client communicates to a message broker which supports STOMP 
 protocol. STOMP uses different commands like connect, send, subscribe, disconnect etc to communicate. 
 
-## Tools
+## Technologies
 
+- Java
+- Maven
 - SockJS
 - STOMP
 - Spring Boot
