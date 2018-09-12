@@ -117,5 +117,7 @@ protocol. STOMP uses different commands like connect, send, subscribe, disconnec
 
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
 - https://www.youtube.com/watch?v=nxakp15CACY
+- Run and go through this sample app: https://github.com/jorgeacetozi/ebook-chat-app-spring-websocket-cassandra-redis-rabbitmq
+- Run and go through this sample app: https://github.com/salmar/spring-websocket-chat
 - [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - https://www.baeldung.com/websockets-spring
