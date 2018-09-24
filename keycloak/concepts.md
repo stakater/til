@@ -18,3 +18,11 @@ Now from this it should be easy to conclude how role mappings work.
 - Composite Role: It is a role that has one or more roles (realm or client ones) associated to it.
 
 Source: https://stackoverflow.com/a/47857926
+
+## Group vs Roles
+
+In the IT world the concepts of Group and Role are often blurred and interchangeable. In Keycloak, Groups are just a collection of users that you can apply roles and attributes to in one place. Roles define a type of user and applications assign permission and access control to roles
+
+Aren’t Composite Roles also similar to Groups? Logically they provide the same exact functionality, but the difference is conceptual. Composite roles should be used to apply the permission model to your set of services and applications. Groups should focus on collections of users and their roles in your organization. Use groups to manage users. Use composite roles to manage applications and services.
+
+Source: https://www.keycloak.org/docs/3.0/server_admin/topics/groups/groups-vs-roles.html
