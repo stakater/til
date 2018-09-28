@@ -17,3 +17,9 @@ kubectl delete ing $(kubectl get ing --namespace cp | awk '{print $1}') --namesp
 ```
 
 Change the namespace name.
+
+## Generate ConfigMap file from a directory
+
+```
+kubectl create configmap my-config --from-file=configuration/ -o yaml --dry-run
+```
