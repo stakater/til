@@ -113,6 +113,21 @@ protocol. STOMP uses different commands like connect, send, subscribe, disconnec
 - Apache Kafka
 - WebSockets
 
+## AWS ALB
+
+- It supports websockets natively
+- [Sticky Sessions](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html#sticky-sessions) : Sticky sessions are a mechanism to route requests to the same target in a target group. This is useful for servers that maintain state information in order to provide a continuous experience to clients. To use sticky sessions, the clients must support cookies.
+- We must have sessionAfinity on the kubernetes service
+```
+apiVersion: v1
+kind: Service
+metadata:
+  ...
+spec:
+  type: NodePort
+  sessionAffinity: ClientIP
+```  
+
 ## References
 
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
