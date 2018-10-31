@@ -1,8 +1,19 @@
 
 # Running Slaves in Jenkins as non-root users
 
-* When using an image with custom user, it is not able to access jenkins logs, as the logs are owned by the "jenkins" user with ID 10000, hence the pipeline hangs. Solution was to create a user with same id i.e. jenkins. 
+* When using an image with custom user, it is not able to access jenkins logs, as the logs are owned by the "jenkins" user with ID 10000, hence the pipeline hangs. Solution was to create a user with same id i.e. jenkins. See [**stakater/maven-jenkins**](https://github.com/stakater-docker/maven-jenkins/blob/master/Dockerfile#L38) docker image.
+
 * If using the Fabric8 maven plugin, they set maven.home to `/root/.m2` so it won't read the settings you mount on `/home/jenkins/.m2`, you will need to overwrite the `mavenOpts` (and maybe `javaOptions` if needed) by passing them in the mavenNode parameters.
+
+  ```
+   mavenNode(mavenImage: 'stakater/maven-jenkins:3.5.4-0.6',
+                                  javaOptions: '-Duser.home=/home/jenkins -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90',
+                                  mavenOpts: '-Duser.home=/home/jenkins -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn') {
+        container(name: 'maven') {
+            // mvn stuff in pipeline
+        }
+    }
+  ```
 * If you face permission issues with mounted mvnrepository permissions issue, Init containers are not possible with podTemplate of kubernetes-plugin, and specifying yaml through “yaml” key did not have any effect apparently (It should have according to documentation and examples). 
   
   **Workaround**: Run pod in pipeline before the others, and own the directory if not already owned using chown (as root)
