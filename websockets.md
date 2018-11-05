@@ -4,6 +4,18 @@
 
 WebSockets is a bi-directional, full-duplex, persistent connection between a web browser and a server. Once a WebSocket connection is established the connection stays open until the client or server decides to close this connection.
 
+WebSocket is a full-duplex communications protocol layered over TCP. It is typically used for interactive communication between a user’s browser and a back-end server. An example would be a chat server with real-time communications between the server and the connected clients. Another example would be a Stock Trading application where the server sends stock price variations to subscribed clients without an explicit client request.
+
+A WebSocket is a communication channel which uses TCP as the underlying protocol. It is initiated by the client sending a HTTP request to the server requesting a connection upgrade to WebSocket. If the server supports WebSockets, the client request is granted and a WebSocket connection is established between the two parties. After this connection is established, all communication happens over the WebSocket and the HTTP protocol is no longer used.
+
+## STOMP over WebSocket
+
+The WebSocket communication protocol itself does not mandate any particular messaging format. It is up to the applications to agree upon the format of the messages exchanged. This format is referred to as the subprotocol. (Kinda similar to how the web browser and web server have agreed to using the HTTP protocol over TCP sockets.)
+
+One commonly used format is the STOMP protocol (Streaming Text Oriented Message Protocol) used for general purpose messaging. Various message oriented middle-ware (MOM) systems such as Apache ActiveMQ, HornetQ and RabbitMQ support STOMP.
+
+The Spring Framework implements WebSocket communication with STOMP as the messaging protocol.
+
 ## A Deeper Look into the SOP and CORS Standard
 
 By default, modern browsers adhere to the SOP which is a security mechanism that places limitations on how the requesting 
@@ -91,6 +103,7 @@ socket connection between browser and web server and start communication. WebSoc
 application we are using STOMP over WebSocket. 
 
 ## SockJS
+
 SockJS is a java script library which provides websocket like object for browsers. SockJS provides cross browser 
 compatibility and supports STOMP protocol to communicate with any message broker. SockJS works in the way that we need to 
 provide URL to connect with message broker and then get the stomp client to communicate. 
@@ -99,9 +112,14 @@ provide URL to connect with message broker and then get the stomp client to comm
 
 SockJS lets applications use a WebSocket API but falls back to non-WebSocket alternatives when necessary at runtime, without the need to change application code.
 
+SockJS, the best and the most comprehensive WebSocket browser fallback options. You will need fallback options in browsers that don't support WebSocket and in situations where network proxies prevent its use. Simply put SockJS enables you to build WebSocket applications
+
 ## STOMP Protocol
+
 STOMP is Streaming Text Oriented Messaging Protocol. A STOMP client communicates to a message broker which supports STOMP 
 protocol. STOMP uses different commands like connect, send, subscribe, disconnect etc to communicate. 
+
+STOMP is a messaging protocol created with simplicity in mind. It is based on frames modelled on HTTP. A frame consists of a command, optional headers, and optional body.
 
 ## Technologies
 
@@ -142,6 +160,10 @@ Spring WebSocket is the Spring module that enables WebSocket-style messaging sup
 
 Spring WebSocket makes it straightforward to enable websockets and work as a relay to a message broker such as RabbitMQ. This way you may run multiple application container connected to the same instance or maybe a cluster of RabbitMQ instances.
 
+The application is clustered ( many nodes behind a Load Balancer) so it requires more complicate solution than just a simple java server which can send and receive websocket frames. Because of that, we decided to use a STOMP Broker which will allow us to scale for multiple nodes.
+
+There are few Brokers which implements the STOMP protocol, we have chosen RabbitMQ since it has larger community and it seems more reliable(it also has nice administration UI).
+
 Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 
 ## References
@@ -152,3 +174,7 @@ Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 - Run and go through this sample app: https://github.com/salmar/spring-websocket-chat
 - [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - https://www.baeldung.com/websockets-spring
+
+## Reference Implementations
+
+- https://github.com/rstoyanchev/spring-websocket-portfolio
