@@ -166,6 +166,20 @@ There are few Brokers which implements the STOMP protocol, we have chosen Rabbit
 
 Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 
+## HTTP Versus WebSocket
+
+Even though WebSocket is designed to be HTTP-compatible and starts with an HTTP request, it is important to understand that the two protocols lead to very different architectures and application programming models.
+
+In HTTP and REST, an application is modeled as many URLs. To interact with the application, clients access those URLs, request-response style. Servers route requests to the appropriate handler based on the HTTP URL, method, and headers.
+
+By contrast, in WebSockets, there is usually only one URL for the initial connect. Subsequently, all application messages flow on that same TCP connection. This points to an entirely different asynchronous, event-driven, messaging architecture.
+
+WebSocket is also a low-level transport protocol, which, unlike HTTP, does not prescribe any semantics to the content of messages. That means that there is no way to route or process a message unless the client and the server agree on message semantics.
+
+WebSocket clients and servers can negotiate the use of a higher-level, messaging protocol (for example, STOMP), through the Sec-WebSocket-Protocol header on the HTTP handshake request. In the absence of that, they need to come up with their own conventions.
+
+Extracted [from](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket)
+
 ## References
 
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
