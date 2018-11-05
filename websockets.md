@@ -183,4 +183,6 @@ Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 
 ### Application & Message Broker Solution
 
+Another approach is to make the application handle incoming messages and serve as intermediary between web clients and the message broker. Messages from clients can flow to the broker through the application and reversely messages from the broker can flow back to clients through the application. This gives the application a chance to examine the incoming message type and "destination" header and decide whether to handle the message or pass it on to the broker.
+
 ![Application and Message-Broker Solution](/diagrams/m2-app-server-broker.png)
