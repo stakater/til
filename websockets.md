@@ -183,6 +183,22 @@ Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 
 ### Application & Message Broker Solution
 
-Another approach is to make the application handle incoming messages and serve as intermediary between web clients and the message broker. Messages from clients can flow to the broker through the application and reversely messages from the broker can flow back to clients through the application. This gives the application a chance to examine the incoming message type and "destination" header and decide whether to handle the message or pass it on to the broker.
+One approach is to make the application handle incoming messages and serve as intermediary between web clients and the message broker. Messages from clients can flow to the broker through the application and reversely messages from the broker can flow back to clients through the application. This gives the application a chance to examine the incoming message type and "destination" header and decide whether to handle the message or pass it on to the broker.
 
 ![Application and Message-Broker Solution](/diagrams/m2-app-server-broker.png)
+
+### Message-Broker Solution
+
+One server-side option is a pure message-broker solution where messages are sent directly to a traditional message broker like RabbitMQ, ActiveMQ, etc. Most, if not all brokers, support STOMP over TCP but increasingly they support it over WebSocket too while RabbitMQ goes further and also supports SockJS. Our architecture would look like this:
+
+![Application and Message-Broker Solution](/diagrams/m2-broker-solution.png)
+
+This is a robust and scalable solution but arguably not the best fit for the problem at hand. Message brokers have typically been used within the enterprise. Exposing them directly over the web isn't ideal.
+
+If we've learned anything from REST it is that we don't want to expose details about the internals of our system like the database or the domain model.
+
+Furthermore, as a Java developer you want to apply security, validation, and add application logic. In a message-broker solution the application server sits behind the message broker, which is a significant departure from what most web application developer are used to.
+
+This is why a library such as socket.io is popular. It is simple and it targets the needs of web applications. On other hand we must not ignore the capabilities of message brokers to handle messages, they are really good at it and messaging is a hard problem. We need the best of both.
+
+Extracted [from](http://assets.spring.io/wp/WebSocketBlogPost.html)
