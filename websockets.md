@@ -191,7 +191,7 @@ One approach is to make the application handle incoming messages and serve as in
 
 One server-side option is a pure message-broker solution where messages are sent directly to a traditional message broker like RabbitMQ, ActiveMQ, etc. Most, if not all brokers, support STOMP over TCP but increasingly they support it over WebSocket too while RabbitMQ goes further and also supports SockJS. Our architecture would look like this:
 
-![Application and Message-Broker Solution](/diagrams/m2-broker-solution.png)
+![Application and Message-Broker Solution](/diagrams/me-broker-solution.png)
 
 This is a robust and scalable solution but arguably not the best fit for the problem at hand. Message brokers have typically been used within the enterprise. Exposing them directly over the web isn't ideal.
 
