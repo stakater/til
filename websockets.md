@@ -128,6 +128,22 @@ spec:
   sessionAffinity: ClientIP
 ```  
 
+## Why need RabbitMQ?
+
+We have websockets implemented over the STOMP protocol. These websockets were currently maintained by our application container. Since we wanted to achieve a multi-instance production environment we would have to use a single message broker so messaging can reach any connected endpoint, not only the ones known by each application container.
+
+Our application used websockets to send notifications to connected users. So far, so good. The thing is that we were using our application container message broker implementation and when running multiple application containers, notifications could obviously not reach all intended users because their connection might have been established with any application container, possibly not the with the one sending the message.
+
+RabbitMQ is a message broker software that can be integrated to the Spring ecosystem. In this scenario our application container receives websockets connections and relay them to RabbitMQ. This way all websockets are knowledgeable by any application container and can get notified.
+
+RabbitMQ is a message broker solution which supports multiple messaging protocols. STOMP is one among these supported protocols.
+
+Spring WebSocket is the Spring module that enables WebSocket-style messaging support. As Spring WebSocket’s documentation states, the WebSocket protocol defines an important new capability for web applications: full-duplex, two-way communication between client and server.
+
+Spring WebSocket makes it straightforward to enable websockets and work as a relay to a message broker such as RabbitMQ. This way you may run multiple application container connected to the same instance or maybe a cluster of RabbitMQ instances.
+
+Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
+
 ## References
 
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
