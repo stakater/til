@@ -178,3 +178,9 @@ Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 ## Reference Implementations
 
 - https://github.com/rstoyanchev/spring-websocket-portfolio
+
+## Diagrams
+
+### Application & Message Broker Solution
+
+![Application and Message-Broker Solution](/diagrams/m2-app-server-broker.png)
