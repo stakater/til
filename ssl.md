@@ -13,6 +13,8 @@ Hunting an error:
 {“timestamp”:“2018-11-05T11:24:19.389+01:00",“message”:“Error getLaunchUrl: unable to get launch url I/O error on POST request for \“https://gateway-evolution.ocp.xyz.abc.se/v1/launchUrl\“:  sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target; nested exception is javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target”,“logger_name”:“abc.xyz.service.token.handler.service.Service”,“thread_name”:“https-jsse-nio-8443-exec-10”,“applevel”:“ERROR”,“level_value”:40000,“logtype”:“server”}
 ```
 
+The root cause of above was that app was using a custom truststore and that didn't include the default root CA's which exist OOTB on the truststore!
+
 Regardless - do make sure you fully understand the difference between:
 
 - the keystore (in which you have the private key and cert you prove your own identity with) and 
@@ -48,4 +50,29 @@ Trust store generally (actually should only contain root CAs but this rule is vi
 
 ```
 keytool -list -v -keystore truststore.jks
+```
+
+How and where to find the keystore/truststore (certs) on OpenShift java docker images?
+
+```
+sh-4.2$ which java
+/usr/bin/java
+sh-4.2$ cd /usr/bin/java
+sh: cd: /usr/bin/java: Not a directory
+sh-4.2$ ls -l /usr/bin/java
+lrwxrwxrwx. 1 root root 22 Aug  1 19:09 /usr/bin/java -> /etc/alternatives/java
+sh-4.2$ ls -l /etc/alternatives/java
+lrwxrwxrwx. 1 root root 73 Aug  1 19:09 /etc/alternatives/java -> /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre/bin/java
+sh-4.2$ cd /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre/
+sh-4.2$ cd lib/security/
+sh-4.2$ ls -l
+total 52
+-rw-r--r--. 1 root root  1273 Jul 16 17:34 blacklisted.certs
+lrwxrwxrwx. 1 root root    41 Aug  1 19:09 cacerts -> ../../../../../../../etc/pki/java/cacerts
+-rw-r--r--. 1 root root  2466 Jul 16 17:34 java.policy
+-rw-r--r--. 1 root root 40921 Aug  1 20:25 java.security
+-rw-r--r--. 1 root root   139 Jul 16 17:39 nss.cfg
+drwxr-xr-x. 4 root root    38 Aug  1 19:09 policy
+sh-4.2$ keytool -v -list -keystore cacerts
+Enter keystore password: [changeme]
 ```
