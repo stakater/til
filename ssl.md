@@ -42,4 +42,3 @@ The CA you are using is not trusted by Java.
 We need to mount right truststore in the pod
 ```
 
-- 
