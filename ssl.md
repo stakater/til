@@ -42,3 +42,10 @@ The CA you are using is not trusted by Java.
 We need to mount right truststore in the pod
 ```
 
+If a truststore has been mounted then we need to ensure that it has correct CA certs:
+
+Trust store generally (actually should only contain root CAs but this rule is violated in general) contains the certificates that of the root CAs (public CAs or private CAs). You can verify the list of certs in trust store using
+
+```
+keytool -list -v -keystore truststore.jks
+```
