@@ -1,0 +1,47 @@
+Run a statefulset to verify that a volume can be provisioned and mounted on each node in the cluster
+
+```
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: busybox
+spec:
+  serviceName: busybox
+  replicas: 20
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      # to ensure it runs on master as well
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values: 
+                    - busybox
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: busybox
+        image: busybox
+        args: [/bin/sh, -c,
+            'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 200s; done']
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/data
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: nfs-ssd
+      resources:
+        requests:
+          storage: 1Gi
+```
