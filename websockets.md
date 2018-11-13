@@ -166,6 +166,8 @@ There are few Brokers which implements the STOMP protocol, we have chosen Rabbit
 
 Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
 
+By relay means that connection is between the client and the broker; and this can be seen in the browser! In case of simple broker the connection is between client (browser) and the application pod.
+
 ## HTTP Versus WebSocket
 
 Even though WebSocket is designed to be HTTP-compatible and starts with an HTTP request, it is important to understand that the two protocols lead to very different architectures and application programming models.
