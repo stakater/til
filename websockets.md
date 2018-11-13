@@ -188,6 +188,8 @@ Extracted [from](https://docs.spring.io/spring/docs/current/spring-framework-ref
 - Run and go through this sample app: https://github.com/salmar/spring-websocket-chat
 - [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - https://www.baeldung.com/websockets-spring
+- http://djeison.me/2017/11/04/spring-websocket-rabbitmq/
+- http://assets.spring.io/wp/WebSocketBlogPost.html : Great Read!
 
 ## Reference Implementations
 
