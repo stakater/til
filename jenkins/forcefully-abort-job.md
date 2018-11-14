@@ -14,3 +14,14 @@ Jenkins.instance.getItemByFullName("JobName").getBuildByNumber(JobNumber).finish
 ```
 
 Enter your Job Name inplace of `JobName` and Build number in place of `JobNumber` 
+
+e.g.
+
+```
+Jenkins.instance.getItemByFullName("carbook/vehicles-service")
+                .getBuildByNumber(47)
+                .finish(
+                        hudson.model.Result.ABORTED,
+                        new java.io.IOException("Aborting build")
+                );
+```

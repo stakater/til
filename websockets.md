@@ -4,6 +4,18 @@
 
 WebSockets is a bi-directional, full-duplex, persistent connection between a web browser and a server. Once a WebSocket connection is established the connection stays open until the client or server decides to close this connection.
 
+WebSocket is a full-duplex communications protocol layered over TCP. It is typically used for interactive communication between a user’s browser and a back-end server. An example would be a chat server with real-time communications between the server and the connected clients. Another example would be a Stock Trading application where the server sends stock price variations to subscribed clients without an explicit client request.
+
+A WebSocket is a communication channel which uses TCP as the underlying protocol. It is initiated by the client sending a HTTP request to the server requesting a connection upgrade to WebSocket. If the server supports WebSockets, the client request is granted and a WebSocket connection is established between the two parties. After this connection is established, all communication happens over the WebSocket and the HTTP protocol is no longer used.
+
+## STOMP over WebSocket
+
+The WebSocket communication protocol itself does not mandate any particular messaging format. It is up to the applications to agree upon the format of the messages exchanged. This format is referred to as the subprotocol. (Kinda similar to how the web browser and web server have agreed to using the HTTP protocol over TCP sockets.)
+
+One commonly used format is the STOMP protocol (Streaming Text Oriented Message Protocol) used for general purpose messaging. Various message oriented middle-ware (MOM) systems such as Apache ActiveMQ, HornetQ and RabbitMQ support STOMP.
+
+The Spring Framework implements WebSocket communication with STOMP as the messaging protocol.
+
 ## A Deeper Look into the SOP and CORS Standard
 
 By default, modern browsers adhere to the SOP which is a security mechanism that places limitations on how the requesting 
@@ -91,6 +103,7 @@ socket connection between browser and web server and start communication. WebSoc
 application we are using STOMP over WebSocket. 
 
 ## SockJS
+
 SockJS is a java script library which provides websocket like object for browsers. SockJS provides cross browser 
 compatibility and supports STOMP protocol to communicate with any message broker. SockJS works in the way that we need to 
 provide URL to connect with message broker and then get the stomp client to communicate. 
@@ -99,9 +112,14 @@ provide URL to connect with message broker and then get the stomp client to comm
 
 SockJS lets applications use a WebSocket API but falls back to non-WebSocket alternatives when necessary at runtime, without the need to change application code.
 
+SockJS, the best and the most comprehensive WebSocket browser fallback options. You will need fallback options in browsers that don't support WebSocket and in situations where network proxies prevent its use. Simply put SockJS enables you to build WebSocket applications
+
 ## STOMP Protocol
+
 STOMP is Streaming Text Oriented Messaging Protocol. A STOMP client communicates to a message broker which supports STOMP 
 protocol. STOMP uses different commands like connect, send, subscribe, disconnect etc to communicate. 
+
+STOMP is a messaging protocol created with simplicity in mind. It is based on frames modelled on HTTP. A frame consists of a command, optional headers, and optional body.
 
 ## Technologies
 
@@ -128,6 +146,42 @@ spec:
   sessionAffinity: ClientIP
 ```  
 
+## Why need RabbitMQ?
+
+We have websockets implemented over the STOMP protocol. These websockets were currently maintained by our application container. Since we wanted to achieve a multi-instance production environment we would have to use a single message broker so messaging can reach any connected endpoint, not only the ones known by each application container.
+
+Our application used websockets to send notifications to connected users. So far, so good. The thing is that we were using our application container message broker implementation and when running multiple application containers, notifications could obviously not reach all intended users because their connection might have been established with any application container, possibly not the with the one sending the message.
+
+RabbitMQ is a message broker software that can be integrated to the Spring ecosystem. In this scenario our application container receives websockets connections and relay them to RabbitMQ. This way all websockets are knowledgeable by any application container and can get notified.
+
+RabbitMQ is a message broker solution which supports multiple messaging protocols. STOMP is one among these supported protocols.
+
+Spring WebSocket is the Spring module that enables WebSocket-style messaging support. As Spring WebSocket’s documentation states, the WebSocket protocol defines an important new capability for web applications: full-duplex, two-way communication between client and server.
+
+Spring WebSocket makes it straightforward to enable websockets and work as a relay to a message broker such as RabbitMQ. This way you may run multiple application container connected to the same instance or maybe a cluster of RabbitMQ instances.
+
+The application is clustered ( many nodes behind a Load Balancer) so it requires more complicate solution than just a simple java server which can send and receive websocket frames. Because of that, we decided to use a STOMP Broker which will allow us to scale for multiple nodes.
+
+There are few Brokers which implements the STOMP protocol, we have chosen RabbitMQ since it has larger community and it seems more reliable(it also has nice administration UI).
+
+Extracted [from](http://djeison.me/2017/11/04/spring-websocket-rabbitmq/)
+
+By relay means that connection is between the client and the broker; and this can be seen in the browser! In case of simple broker the connection is between client (browser) and the application pod.
+
+## HTTP Versus WebSocket
+
+Even though WebSocket is designed to be HTTP-compatible and starts with an HTTP request, it is important to understand that the two protocols lead to very different architectures and application programming models.
+
+In HTTP and REST, an application is modeled as many URLs. To interact with the application, clients access those URLs, request-response style. Servers route requests to the appropriate handler based on the HTTP URL, method, and headers.
+
+By contrast, in WebSockets, there is usually only one URL for the initial connect. Subsequently, all application messages flow on that same TCP connection. This points to an entirely different asynchronous, event-driven, messaging architecture.
+
+WebSocket is also a low-level transport protocol, which, unlike HTTP, does not prescribe any semantics to the content of messages. That means that there is no way to route or process a message unless the client and the server agree on message semantics.
+
+WebSocket clients and servers can negotiate the use of a higher-level, messaging protocol (for example, STOMP), through the Sec-WebSocket-Protocol header on the HTTP handshake request. In the absence of that, they need to come up with their own conventions.
+
+Extracted [from](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket)
+
 ## References
 
 - Chapter 18 - Messaging with WebSocket and STOMP from Spring in Action 4th Edition
@@ -136,3 +190,35 @@ spec:
 - Run and go through this sample app: https://github.com/salmar/spring-websocket-chat
 - [WebSockets not Bound by SOP and CORS?](https://blog.securityevaluators.com/websockets-not-bound-by-cors-does-this-mean-2e7819374acc)
 - https://www.baeldung.com/websockets-spring
+- http://djeison.me/2017/11/04/spring-websocket-rabbitmq/
+- http://assets.spring.io/wp/WebSocketBlogPost.html : Great Read!
+
+## Reference Implementations
+
+- https://github.com/rstoyanchev/spring-websocket-portfolio
+
+## Diagrams
+
+### Application & Message Broker Solution
+
+One approach is to make the application handle incoming messages and serve as intermediary between web clients and the message broker. Messages from clients can flow to the broker through the application and reversely messages from the broker can flow back to clients through the application. This gives the application a chance to examine the incoming message type and "destination" header and decide whether to handle the message or pass it on to the broker.
+
+![Application and Message-Broker Solution](/diagrams/m2-app-server-broker.png)
+
+**This is preferred approach**
+
+### Message-Broker Solution
+
+One server-side option is a pure message-broker solution where messages are sent directly to a traditional message broker like RabbitMQ, ActiveMQ, etc. Most, if not all brokers, support STOMP over TCP but increasingly they support it over WebSocket too while RabbitMQ goes further and also supports SockJS. Our architecture would look like this:
+
+![Application and Message-Broker Solution](/diagrams/me-broker-solution.png)
+
+This is a robust and scalable solution but arguably not the best fit for the problem at hand. Message brokers have typically been used within the enterprise. Exposing them directly over the web isn't ideal.
+
+If we've learned anything from REST it is that we don't want to expose details about the internals of our system like the database or the domain model.
+
+Furthermore, as a Java developer you want to apply security, validation, and add application logic. In a message-broker solution the application server sits behind the message broker, which is a significant departure from what most web application developer are used to.
+
+This is why a library such as socket.io is popular. It is simple and it targets the needs of web applications. On other hand we must not ignore the capabilities of message brokers to handle messages, they are really good at it and messaging is a hard problem. We need the best of both.
+
+Extracted [from](http://assets.spring.io/wp/WebSocketBlogPost.html)
