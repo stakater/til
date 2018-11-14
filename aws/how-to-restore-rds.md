@@ -18,8 +18,8 @@ Lets say we are resuming a database called: `keycloak-dev`
 - Then click Restore DB Instance
 - (Note: this will create a new database instance with new name/identifier)
 - Once its created; then modify it and set the password & security groups to the same as the db being restored
+- (one option could be to give the new database identifier to the pod; if you don't want to rename; but it's better if its named the same way ...)
 - Change the database name of old db; e.g. `keycloak-dev-broken`
 - Change the databse name of new restored db to `keycloak-dev`
-- (one option could be to use 
 - Scale up the pods again; and verify everything is up and running
 - If all looks good then the older instance of database i.e. `keycloak-dev-broken` can be deleted
