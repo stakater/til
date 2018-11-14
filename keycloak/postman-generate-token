@@ -1,0 +1,14 @@
+<h1>Generate JWT using postman</h1>
+
+Postman have a feature to genereate JWT without accessing in client side (Front-end) APP.
+
+Follow these steps to generate access token (Oauth2):
+
+<ul>
+<li> go to 'Authorization' tab in request window</li>
+<li> Select 'OAuth2' in Type (Security Type)</li>
+<li> click on 'Generate New Access Token' </li>
+<li> use`Grant Type` according to your scenario. In this case we will choose 'Password Credentials' </li>
+<li> insert {Server IP}/auth/realms/{realm}/protocol/openid-connect/token' in Access token URL </li>
+<li> Add Username and Password of any user of the selected realm to create its access token </li>
+<li> Insert 'Cient ID' (name of your client) and request token </li>
