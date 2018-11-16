@@ -27,7 +27,7 @@ http://maven.apache.org/SETTINGS/1.1.0 "
         -->
         <mirror>
             <id>Nexus1</id>
-            <name>Nexus based maven repository manager for stakater.</name>
+            <name>Nexus based maven repository manager for Company X.</name>
             <!-- The base URL of this mirror. The build system will use this URL to connect to a repository rather than the original repository URL. -->
             <url>https://nexus.tools.nexus1.com/repository/public/</url>
             <!--  everything not on the localhost and not file based. -->
@@ -40,7 +40,7 @@ http://maven.apache.org/SETTINGS/1.1.0 "
 
         <mirror>
             <id>Nexus2</id>
-            <name>Nexus based maven repository manager for digital dealer.</name>
+            <name>Nexus based maven repository manager for Company Y.</name>
             <!-- The base URL of this mirror. The build system will use this URL to connect to a repository rather than the original repository URL. -->
             <url>https://nexus.tools.nexus2.com/repository/public/</url>
             <!--  everything not on the localhost and not file based. -->
@@ -90,13 +90,13 @@ http://maven.apache.org/SETTINGS/1.1.0 "
             <repositories>
                 <repository>
                     <id>Nexus1</id>
-                    <name>stakater repository</name>
+                    <name>company1 repository</name>
                     <url>https://nexus.tools.nexus1.com/repository/public/</url>
                 </repository>
 
                 <repository>
                     <id>Nexus2</id>
-                    <name>dealer repository</name>
+                    <name>company2 repository</name>
                     <url>https://nexus.tools.nexus2.com/repository/public/</url>
                 </repository>            
 
