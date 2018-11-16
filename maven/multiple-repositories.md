@@ -25,6 +25,12 @@ http://maven.apache.org/SETTINGS/1.1.0 "
         repo,repo1 = repo or repo1
         *,!repo1 = everything except repo1        
         -->
+       <mirror>
+            <id>MavenCentral</id>       
+            <url>https://repo.maven.apache.org/maven2</url>
+            <mirrorOf>central</mirrorOf>
+       </mirror>        
+        
         <mirror>
             <id>Nexus1</id>
             <name>Nexus based maven repository manager for Company X.</name>
@@ -50,12 +56,6 @@ http://maven.apache.org/SETTINGS/1.1.0 "
             <!-- mirrorOf>external:*</mirrorOf -->
             <mirrorOf>dealer</mirrorOf>
         </mirror>
-
-       <mirror>
-            <id>MavenCentral</id>       
-            <url>https://repo.maven.apache.org/maven2</url>
-            <mirrorOf>central</mirrorOf>
-       </mirror>
 
     </mirrors>
 
@@ -89,6 +89,11 @@ http://maven.apache.org/SETTINGS/1.1.0 "
             <id>nexus</id>
             <repositories>
                 <repository>
+                    <id>MavenCentral</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                </repository>
+            
+                <repository>
                     <id>Nexus1</id>
                     <name>company1 repository</name>
                     <url>https://nexus.tools.nexus1.com/repository/public/</url>
@@ -100,10 +105,6 @@ http://maven.apache.org/SETTINGS/1.1.0 "
                     <url>https://nexus.tools.nexus2.com/repository/public/</url>
                 </repository>            
 
-                <repository>
-                    <id>MavenCentral</id>
-                    <url>https://repo.maven.apache.org/maven2/</url>
-                </repository>
             </repositories>
         </profile>
     </profiles>
