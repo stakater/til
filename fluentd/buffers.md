@@ -41,4 +41,12 @@ openshift_logging_fluentd_file_buffer_limit=1Gi
 So both file_buffer_limit and possibly buffer_queue_limit could be related
 ```
 
+Buffer will fill up if it can't push; we will see errors like this:
 
+```
+2018-11-27 14:04:17 +0100 [warn]: temporarily failed to flush the buffer. next_retry=2018-11-27 14:03:09 +0100 error_class="Fluent::ElasticsearchOutput::ConnectionFailure" error="Can not reach Elasticsearch cluster ({:host=>\"logging-es\", :port=>9200, :scheme=>\"https\", :user=>\"fluentd\", :password=>\"obfuscated\"})!" plugin_id="object:1942b58"
+  2018-11-27 14:04:17 +0100 [warn]: suppressed same stacktrace
+2018-11-27 14:04:52 +0100 [warn]: temporarily failed to flush the buffer. next_retry=2018-11-27 14:03:13 +0100 error_class="Fluent::ElasticsearchOutput::ConnectionFailure" error="Can not reach Elasticsearch cluster ({:host=>\"logging-es\", :port=>9200, :scheme=>\"https\", :user=>\"fluentd\", :password=>\"obfuscated\"})!" plugin_id="object:1942b58"
+  2018-11-27 14:04:52 +0100 [warn]: suppressed same stacktrace
+```
+  
