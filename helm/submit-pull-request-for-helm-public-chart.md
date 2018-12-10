@@ -57,3 +57,20 @@
     OWNERS
     ```
 - Follow guidelines mentioned [here](https://github.com/helm/charts/blob/master/REVIEW_GUIDELINES.md) and [here](https://github.com/helm/charts/blob/master/CONTRIBUTING.md) for additional info before submitting the PR.
+
+## Creating PR
+- Add [helm/charts] and also chart name e.g. [stable/jenkins] in PR title to easily distinguish it.
+- Add signoff comment in PR description e.g.
+  ```text
+  Signed-off-by: Faizan Ahmad
+  username: faizanahmad055
+  email: faizan.ahmad55@outlook.com
+  ```
+- Add description and purpose of your changes.
+- Tick these three boxes by placing an `x` (no spaces) in `[]`
+  ```text
+  [x] DCO signed
+  [x] Chart Version bumped
+  [x] Variables are documented in the README.md
+  ``` 
+After creating a PR, ping the maintainers regularly.
