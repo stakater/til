@@ -38,13 +38,14 @@ These are the best practices that helm/charts repo uses. These practices are nec
 
 - Follow all guidelines in **Improvement in existing chart**
 - Give additional support for envs, annotations and labels and make sure every thing is dynamic.
+- Set `version: 1.0.0` in chart.yaml
+- Set `appVersion: <your app version>` in chart.yaml
+- Update chart.yaml in your app as well
 - These labels are mandatory on every resouce
 
 ```yaml
     app: {{ template "name" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
 ```
 
 - Add `OWNERS` file containing the owners of chart.
