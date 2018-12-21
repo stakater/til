@@ -85,3 +85,7 @@ The following are some things we can do to solve these permission issues:
 ## Config Maps In Kubernetes
 
 This is a very similar issue to the previous one. Mounting a config-map to a non-root container creates the file path with root permissions. Therefore, if the container tries to write something else in that path, it will result in a permissions error. The Pod Security Policies doesn't seem to work for configMaps so we will have to use an init-container to fix the permissions if necessary.
+
+## References
+
+- [Non root containers](https://engineering.bitnami.com/articles/running-non-root-containers-on-openshift.html)
