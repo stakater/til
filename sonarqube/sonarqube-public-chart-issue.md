@@ -14,3 +14,20 @@
     Sonarqube version: 7.1
     
     Starts sonarqube with custom plugins, and installs default plugins correctly too. Custom `sonar.properties` files still doesn't work.
+
+
+# Further findings
+
+I finally managed to install plugins, and pass properties file in the version `0.7.2` of sonarqube public chart. The issue is all the passed properties will work fine, but when viewed from dashboard, default properties will be shown. This seems to be a bug in the old version. For using this version following command must be passed in the values file 
+
+```
+  command: [
+    "sh",
+    "-ce",
+    "mkdir /scripts &&
+    cp /tmp-script/startup.sh /scripts/startup.sh &&
+    chmod 0755 /scripts/startup.sh &&
+    /scripts/startup.sh
+    "
+    ]
+```
