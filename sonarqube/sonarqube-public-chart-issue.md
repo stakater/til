@@ -31,3 +31,14 @@ I finally managed to install plugins, and pass properties file in the version `0
     "
     ]
 ```
+
+# Working solution
+
+Sonarqube public chart latest version `0.12.2` works with the latest image `7.4-community`, except that custom plugins are not being installed. The reason is that custom plugins are being downloaded but not being copied to the right directory. To solve the issue add the following command in the values.yaml file 
+
+```
+    command:
+        - /usr/local/copy_plugins.sh
+```
+
+There is a pending PR where this plugin copying thing will be removed, and plugins will be downloaded in the exact directory, so the above command will not be needed. 
