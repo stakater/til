@@ -3,6 +3,9 @@
 - Here is a working example of how to use multiple repositories to download maven dependencies for `Maven 3.5`
 - It's impossible to specify a dedicated repository to look up an artifact. Maven will look up all configured repositories one by one until the artifact is found. Just add the central mirror and internal repositories to the `settings.xml`
 
+#### File location
+- Ubuntu: On a ubuntu based system the `settings.xml` file is located at `/home/<user-name>/.m2/`
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd
