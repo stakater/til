@@ -1,0 +1,3 @@
+# Accessing an App on Internal Ingress through Forecastle
+
+When an app is exposed on Internal Ingress, and even though force-ssl-redirect is set to true, but forecastle sets the link from host which is without http or https. And usually we add the ip with port 443 in security group. So when one accesses the link from forecastle, it opens the link in http and once the link is opened, then it redirects to https. But if you are unable to access app on http, the link never redirects. To fix this, we can add annotation on Forecastle to append https to the url of the host, or you can add ip with port 80 as well to support http. So  if you access the app on Forecastle, you need both port 80 and 443 of an ip.
