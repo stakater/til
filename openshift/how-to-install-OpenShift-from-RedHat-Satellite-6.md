@@ -199,3 +199,7 @@ NOTE:
 ```
 
 Once installation completes [verify the installation](https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/html-single/installation_and_configuration/#advanced-verifying-the-installation).
+
+## Reference
+
+- https://access.redhat.com/solutions/3435901
