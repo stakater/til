@@ -31,3 +31,24 @@ Redeploy; and then look the logs again:
 Check if you have any old index template that might be specifying a different type and therefore causing a conflict.
 ```
 
+## Solution
+
+The solution was to fix fluentd.conf:
+
+```
+  output.conf: |-
+    # Enriches records with Kubernetes metadata
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+    </filter>
+    
+    <match **>
+      @id elasticsearch
+      @type elasticsearch
+      @log_level debug
+      include_tag_key true
+      type_name fluentd
+```
+
+On our existing index the `type_name` was `fluentd` but on the config I applied it was `_doc` so, that resulted in above error! 
+Changing it to `fluentd` make it work!
