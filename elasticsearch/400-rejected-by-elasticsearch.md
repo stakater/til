@@ -26,3 +26,8 @@ Redeploy; and then look the logs again:
 ```
 2019-01-14 15:33:18 +0000 [warn]: dump an error event: error_class=Fluent::Plugin::ElasticsearchErrorHandler::ElasticsearchError error="400 - Rejected by Elasticsearch [error type]: illegal_argument_exception [reason]: 'Rejecting mapping update to [logstash-2019.01.14] as the final mapping would have more than 1 type: [_doc, fluentd]'" location=nil tag="kube-controller-manager" time=2019-01-14 14:28:46.368055000 +0000 record={"severity"=&gt;"I", "pid"=&gt;"1", "source"=&gt;"wrap.go:42", "message"=&gt;"GET /healthz: (21.528\xC2\xB5s) 200 [[kube-probe/1.10] 127.0.0.1:40680]"}
 ```
+
+```
+Check if you have any old index template that might be specifying a different type and therefore causing a conflict.
+```
+
