@@ -22,13 +22,17 @@ The downside to this plugin is that it only happens to work based on the fact th
 each complete log message. I don't feel particularly comfortable depending on that character being there forever, so maybe we 
 could come up with a better indicator of the end of a message.
 
+```yaml
+  # Concatenate multi-line logs (>=16KB)
+  <filter kubernetes.var.log.containers.**>
+    @type concat
+    key log
+    multiline_end_regexp /\n$/
+    separator ""
+  </filter>
 ```
-<filter **>
-  @type concat
-  key log
-  multiline_end_regexp /\n$/
-</filter>
-```
+
+Just after the kubernetes_metadata injection.
 
 ## References
 
