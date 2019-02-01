@@ -43,6 +43,9 @@ Given (Java) Spring it just abstracts away the under lying technology; so, basic
 
 Some benchmark reports from Redis; so could be biased:
 
+- https://redislabs.com/blog/benchmarking-redis-enterprise-5-2-0-vs-hazelcast-3-9/
+
+Also **note** this is Redis Enterprise vs Hazelcast OpenSource; again not sure if they have tuned Hazelcast in right way or not.
 
 ### 2. Community
 
