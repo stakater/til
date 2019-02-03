@@ -62,3 +62,10 @@ Couple of operators are available; which is good thing!
 ### Development
 
 Given (Java) Spring it just abstracts away the under lying technology; so, basically no difference for developers.
+
+## Synching multiple clusters
+
+Both Redis and Hazelcast have paid products for synching; but other following OpenSource solutions can be used to setup replication/synching:
+
+- https://github.com/twitter/twemproxy
+- https://github.com/Netflix/dynomite
