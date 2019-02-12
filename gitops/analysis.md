@@ -1,8 +1,8 @@
 # GitOps analysis
 
 ## Tools
-* [ArgoCD analysis](gitops/argocd.md)
-* [Weave Flux analysis](gitops/workflow.md)
+* [ArgoCD analysis](argocd.md)
+* [Weave Flux analysis](workflow.md)
 
 ## Conclusion thus far
 ArgoCD is way more production ready due to stability and features than Flux.
