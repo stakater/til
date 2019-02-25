@@ -2,12 +2,17 @@
 
 Here are the high level steps to add new nodes to an OpenShift on-prem cluster:
 
-**Step 1:** From Statellite provision a node
+**Step 1:** From Statellite provision a node by making an API call
 
-**Step 2:** Use puppet modules to add key
+And in the end of kickstart profile we install puppet agent
 
-- this is mandatory for ansible user to be able to run playbooks
+The puppet agent then reaches the puppet master to download and configures itself; the puppet master in this case Satellite as well
 
-**Step 3:** Run pre-flight readiness checks with ansible
+The puppet does basic things like configures users; add keys; NTP; etc. 
 
-Step 4: 
+**Step 2:** Run pre-flight readiness checks with ansible
+
+
+**Step 4:**
+
+
