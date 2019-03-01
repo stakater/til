@@ -1,0 +1,3 @@
+# Complete workflow of api call to Kubernetes Load Balancer Service
+
+When you create a kubernetes service of type `Load Balancer`. A load balancer is created automatically on the cloud provider. This load balancer forwards requests to all the instances specified and not just the one on which the pod is running for the service created. So the way the service still receives the request is thanks to kube-proxy which reflects services as defined in the Kubernetes API on each node and can do simple TCP, UDP, and SCTP stream forwarding or round robin TCP, UDP, and SCTP forwarding across a set of backends
