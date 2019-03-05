@@ -67,3 +67,8 @@ To use PodSecurityPolicy, you must first create and define policies that new and
 
 When multiple PodSecurityPolicies are available, the admission controller uses the first policy that successfully validates. Policies are ordered alphabetically, and the controller prefers non-mutating policies (policies that don't change the Pod) over mutating policies.
 
+## References
+
+This is must read!
+
+- https://events.linuxfoundation.org/wp-content/uploads/2018/02/OpenFintech-OperationalizingMultitenancy.pdf
