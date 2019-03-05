@@ -15,4 +15,8 @@ Let's suppose we created a secret credential with id: `my-secret-id` and text: `
     echo "My secret: ${mySecret}"
 ```
 
-Note that the above step is for scripted pipeline only as in our case. 
+Note that the above step is for scripted pipeline only as in our case. For declarative pipeline follow this guide: 
+
+```
+https://jenkins.io/doc/book/pipeline/jenkinsfile/#handling-credentials
+```
