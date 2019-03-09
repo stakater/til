@@ -76,7 +76,7 @@ service location, routing, service replication, etc., which helps micro-services
 Developers do not need to explicitly write additional code for these types of services because the platform
 provides these facilities. 
 
-### 2.2.3 Continuous Integration/Continuous Delivery (CI/CD)
+### Continuous Integration/Continuous Delivery (CI/CD)
 
 As discussed in the previous section, successful DevOps practice requires a good amount of automation of
 the development, test, QA, and delivery pipeline. This is where the CI/CD comes into play.
