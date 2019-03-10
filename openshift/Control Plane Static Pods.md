@@ -6,4 +6,4 @@ For masters that have etcd co-located on the same host, etcd is also moved to st
 
 In addition, the node components openshift-sdn and openvswitch are now run using a DaemonSet instead of a systemd service.
 
-![Control Plan Static PodControls](Control Plane Static Pods.png)
+![Diagram](Control Plane Static Pods.png)
