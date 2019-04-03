@@ -80,18 +80,18 @@ kubectl create -f <filename>
 kubectl config set-context dev --namespace=dev --cluster=minikube --user=minikube
 ``` 
 
-# To change the context
+* To change the context
 ```bash
 kubectl config use-context <context-name>
 ```
  
-# To get the current context 
+* To get the current context 
 ```bash
 kubectl config current-context 
 ```
  
 
-# To delete a namespace
+* To delete a namespace
 ```bash
 kubectl delete namespaces dev 
 ```
