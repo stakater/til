@@ -1,5 +1,6 @@
 # Basic Commands
 
+This file contains collection of basic commands for k8s:
 
 * It returns the version of the client and master
 ```bash
@@ -27,12 +28,12 @@ kubectl get deployments
 kubectl proxy
 ```
 
-* Show detailed informaton about a resource
+* It will return detailed informaton about a resource
 ```bash
-kubectl describe <resource-type> <resource-name>
+kubectl describe <resource-type, like pods or service> <resource-name>
 ```
 
-* Show logs of a container
+* It will return logs of a container
 ```bash
 kubectl logs <container-name>
 ```
@@ -47,16 +48,15 @@ kubectl get pods
 kubectl exec -ti $POD_NAME /bin/bash
 ```
 
-* To get namespaces
+* It will return namespaces
 ```bash
 Kubectl get namespaces.
 ```
 
-* To create a namespace
+* To create a namespace follow the instructions given below
 
-There are two ways to create a namespace using json or yaml file. Create a json file and insert the content given below in that file 
+There are two ways to create a namespace either by using json or yaml file. Create a json file and insert the content given below in that file:
 
- 
 ```json
 { 
   "kind": "Namespace", 
@@ -70,28 +70,27 @@ There are two ways to create a namespace using json or yaml file. Create a json 
 } 
 ```
 
-Run the command given below 
+Run the command given below to create namespace by using the file given above
 ```bash
 kubectl create -f <filename> 
 ```
 
 * To assign a context to a namespace
 ```bash
-kubectl config set-context dev --namespace=dev --cluster=minikube --user=minikube
+kubectl config set-context <context-name, like dev> --namespace=<namespace name, like dev> --cluster=<cluster name, like minikube> --user=<name of the user, like minikube>
 ``` 
 
-* To change the context
+* It will change current context
 ```bash
 kubectl config use-context <context-name>
 ```
  
-* To get the current context 
+* It will return current context 
 ```bash
 kubectl config current-context 
 ```
  
-
-* To delete a namespace
+* It will delete a namespace
 ```bash
 kubectl delete namespaces dev 
 ```
