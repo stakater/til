@@ -47,4 +47,4 @@ Skopeo can perform:
     $ skopeo delete docker://localhost:5000/imagename:latest
 
 ## Passing Source/Destination credentials
-    $ skopeo copy --src-creds=testuser:testpassword docker://myregistrydomain.com:5000/private oci:local_oci_image
+    $ skopeo copy --src-creds=testuser:testpassword --dest-creds=testuser1:testpassword1 docker://myregistrydomain.com:5000/private oci:local_oci_image
