@@ -1,4 +1,4 @@
-# Go project configuration
+# Guidelines regarding golang projects
 
 This file contains guidelines to setup environment for go projects.
 
