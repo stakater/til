@@ -53,3 +53,15 @@ It is a good practice to fix linting issue locally before pushing code on remote
   $ cd <you-project-folder>
   $ golangci-lint run
   ```
+
+## Run tests locally
+
+  * Move inside the root directory of project
+  ```bash
+  cd <project-directory>
+  ```
+  * To run all tests run the command given below:
+  ```
+  go test ./...
+  ```
+  It will run all the test files by going through all folders recursively. 
