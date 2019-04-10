@@ -19,3 +19,14 @@ func TestSampleUnitTestFunction(t *testing.T) {
 
 }
 ```
+Run the tests using command given below:
+```bash
+$ go run -v <folder-name>
+```
+
+or, to run all the tests inside a folder
+
+```bash
+$ go run -v ./<folder-name>/...
+
+```
