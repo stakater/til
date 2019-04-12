@@ -56,3 +56,6 @@ exit status 1
 
 
 ```
+
+### `NOTE`
+Until now I am unable to find a way to create a global package for logging so that code for setting flag is not repeated in each file.
