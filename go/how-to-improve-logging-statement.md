@@ -1,6 +1,6 @@
 # How to improve logging statement
 
-Golang's log package have some flags that can be used change the log statement structure. Default log message have less information because it show only date and time. 
+Golang's log package have some flags that can be used to change the log statement structure. Default log message have less information because it show only `date` and `time`. 
 
 Example:
 ```bash
