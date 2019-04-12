@@ -61,7 +61,20 @@ It is a good practice to fix linting issue locally before pushing code on remote
   cd <project-directory>
   ```
   * To run all tests run the command given below:
-  ```
+  ```bash
   go test ./...
   ```
-  It will run all the test files by going through all folders recursively. 
+  It will run all the test files by going through all folders recursively.
+
+  * To run tests in verbose mode use the command below:
+  ```bash
+  go test -v ./...
+  ```
+  * To run a specific test from a test cases file use the command given below:
+  ```bash
+  go test -v <path to a package> -run <name of the test>
+  ```
+  * To check the coverage of unit tests use the command given below: 
+  ```bash
+  go test  -coverprofile fmt -v <path to a package> 
+  ```
