@@ -45,4 +45,104 @@ Now nginx is now configured for opentracing. But right now Jaeger UI will only s
 
 In order to monitor services using any distributed tracing system that uses Opentracing standard, the service itself needs to support opentracing capabilities
 
-Details can be found here: https://github.com/opentracing/opentracing-go 
+Details can be found here: https://github.com/opentracing/opentracing-go
+
+## Experimentation with Example application HotROD
+HotROD is an example application that demostrates the tracing using Jaeger UI.
+Following is the Deployment and Service configurations on a test environment.
+hotrod-deploy.yaml:
+```
+# Source: jaeger/templates/hotrod-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-jaeger-hotrod
+  labels:
+    app.kubernetes.io/name: jaeger
+    jaeger-infra: hotrod-deployment
+    helm.sh/chart: jaeger-0.9.0
+    app.kubernetes.io/component: hotrod
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jaeger
+      app.kubernetes.io/component: hotrod
+      app.kubernetes.io/instance: test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: jaeger
+        app.kubernetes.io/component: hotrod
+        app.kubernetes.io/instance: test
+    spec:
+      containers:
+        - name: test-jaeger-hotrod
+          image: jaegertracing/example-hotrod:latest
+          imagePullPolicy: Always
+          env:
+            - name: JAEGER_AGENT_HOST
+              value: jaeger-agent.test
+            - name: JAEGER_AGENT_PORT
+              value: "5775"
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          resources:
+            {}
+```
+hotrod-svc.yaml:
+```
+# Source: jaeger/templates/hotrod-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-jaeger-hotrod
+  labels:
+    app.kubernetes.io/name: jaeger
+    helm.sh/chart: jaeger-0.9.0
+    app.kubernetes.io/component: hotrod
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Tiller
+    expose: "true"
+  annotations:
+    config.xposer.stakater.com/Domain: stakater.com
+    config.xposer.stakater.com/IngressNameTemplate: '{{.Service}}-{{.Namespace}}'
+    config.xposer.stakater.com/IngressURLPath: /
+    config.xposer.stakater.com/IngressURLTemplate: '{{.Service}}.{{.Namespace}}.{{.Domain}}'
+    xposer.stakater.com/annotations: |-
+      kubernetes.io/ingress.class: external-ingress
+      ingress.kubernetes.io/rewrite-target: /
+      ingress.kubernetes.io/force-ssl-redirect: true
+spec:
+  type: ClusterIP
+  ports:
+    - name: hotrod
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: jaeger
+    app.kubernetes.io/component: hotrod
+    app.kubernetes.io/instance: test
+```
+
+HotROD UI was made available at https://test-jaeger-hotrod.test.stakater.com/ through Xposer.
+Jaeger UI was made available at https://jaeger-query.test.stakater.com/ 
+
+Traces are available as Gant charts:
+
+![broken image](../../diagrams/Jaeger-Gant.png)
+
+ as well as Dependency tree graphs:
+
+![broken image](../../diagrams/Jaeger-Dependency.png)
