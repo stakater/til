@@ -19,3 +19,5 @@ An application is responsible for access protection (requiring authentication of
 
 - https://medium.com/@chrismessiah/docker-and-kubernetes-in-high-security-environments-d851645e8b99
 - https://www.youtube.com/watch?v=GLwmJh-j3rs&feature=youtu.be&t=14s
+
+> Simply put, containers are just processes, and as such they are governed by the kernel like any other process. Thus any kernel-land vulnerability which yields arbitrary code execution can be exploited to escape a container.
