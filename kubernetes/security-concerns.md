@@ -23,3 +23,7 @@ An application is responsible for access protection (requiring authentication of
 > Simply put, containers are just processes, and as such they are governed by the kernel like any other process. Thus any kernel-land vulnerability which yields arbitrary code execution can be exploited to escape a container.
 
 > The rules governing containers are the same as any other process: some can be bent, and others can be broken. Vulnerabilities and misconfigurations in container-management programs are not the only means by which an attacker can escape a container. And while the security properties of containers should be celebrated, the isolation of container processes should not be treated as a security boundary.
+
+## References
+
+- Container Escaper in Action: https://capsule8.com/blog/practical-container-escape-exercise/
