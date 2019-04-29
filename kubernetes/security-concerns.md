@@ -26,4 +26,4 @@ An application is responsible for access protection (requiring authentication of
 
 ## References
 
-- Container Escaper in Action: https://capsule8.com/blog/practical-container-escape-exercise/
+- Container Escape in Action: https://capsule8.com/blog/practical-container-escape-exercise/
