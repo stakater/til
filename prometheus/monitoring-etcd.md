@@ -1,6 +1,12 @@
 # ETCD-Monitoring
 
-To configure Prometheus to scrape ETCD, first check if corresponding pods & services are running of etcd. If no, then create service for etcd pod. And add a label to that service you will be using in the service monitor. A sample service is given below.
+## 1. Check if Pods Running
+
+Check in the kube-system namespace that etcd pods are running, there should be two pods, one `etcd-server` and other `etcd-server-events`.
+
+## 2. Check if etcd Service created
+
+Check if corresponding services are running of etcd. If yes, then skip this step. If no, then create service for etcd pod. And add a label to that service you will be using in the service monitor. A sample service is given below.
 
 ```yaml
 apiVersion: v1
@@ -25,6 +31,8 @@ spec:
   type: ClusterIP
 ```
 
+## 3. Create ServiceMonitor
+
 Then create a ServiceMonitor for above Service, that Prometheus Operator should scrape. A sample ServiceMonitor is as follows:
 
 ```yaml
@@ -47,10 +55,12 @@ spec:
     - kube-system
   selector:
     matchLabels:
-      app: stakater-kube-etcd
+      app: stakater-kube-etcd    # Label on Service of etcd
 ```
 
 Now, etcd will be shown as targets in Prometheus, which you can see.
+
+## 4. Troubleshooting
 
 If it is working fine, then good, if not and it gives the erro `Get http://<master-ip>:4001/metrics: context deadline exceeded`,  you would have to open the metrics port on your master node, so open the respective port i.e. either 2379 or 4001, on the master, and check again, it will be able to successfully scrape it.
 
@@ -60,4 +70,6 @@ Now you can check in Prometheus queries, etcd metrics will be exposed based on y
 
 - etcd2: For etcd3 metrics, check https://github.com/etcd-io/etcd/blob/master/Documentation/v2/metrics.md
 
-If you have etcd3, you can configure this Grafana [dashboard](https://grafana.com/dashboards/3070).
+## 4. Grafana
+
+If you have etcd version 3, you can configure this Grafana [dashboard](https://grafana.com/dashboards/3070). Note it will not work on etcd version 2.
