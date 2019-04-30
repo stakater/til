@@ -1,8 +1,16 @@
 # ETCD-Monitoring
 
+This TIL describes to monitor ETCD in:
+
+- OpenShift Enterprise
+- Kubernetes
+- OKD
+
 ## 1. Check if Pods Running
 
-Check in the kube-system namespace that etcd pods are running, there should be two pods, one `etcd-server` and other `etcd-server-events`.
+Check in the kube-system namespace that etcd pods are running, depending on the setup you should find at-least one `etcd-server` and other `etcd-server-events`.
+
+Just so, you know that ETCD runs as static pods in Kubernetes.
 
 ## 2. Check if etcd Service created
 
@@ -60,6 +68,8 @@ spec:
 
 Now, etcd will be shown as targets in Prometheus, which you can see.
 
+**TODO** Add screen shot
+
 ## 4. Troubleshooting
 
 If it is working fine, then good, if not and it gives the erro `Get http://<master-ip>:4001/metrics: context deadline exceeded`,  you would have to open the metrics port on your master node, so open the respective port i.e. either 2379 or 4001, on the master, and check again, it will be able to successfully scrape it.
@@ -73,3 +83,5 @@ Now you can check in Prometheus queries, etcd metrics will be exposed based on y
 ## 4. Grafana
 
 If you have etcd version 3, you can configure this Grafana [dashboard](https://grafana.com/dashboards/3070). Note it will not work on etcd version 2.
+
+**TODO** Add screen shot
