@@ -6,13 +6,13 @@ This TIL describes to monitor ETCD in:
 - Kubernetes
 - OKD
 
-## 1. Check if Pods Running
+## 1. Verify ETCD Pods are Running
 
 Check in the kube-system namespace that etcd pods are running, depending on the setup you should find at-least one `etcd-server` and other `etcd-server-events`.
 
 Just so, you know that ETCD runs as static pods in Kubernetes.
 
-## 2. Check if etcd Service created
+## 2. Create ETCD Service
 
 Check if corresponding services are running of etcd. If yes, then skip this step. If no, then create service for etcd pod. And add a label to that service you will be using in the service monitor. A sample service is given below.
 
@@ -39,7 +39,7 @@ spec:
   type: ClusterIP
 ```
 
-## 3. Create ServiceMonitor
+## 3. Create ETCD ServiceMonitor
 
 Then create a ServiceMonitor for above Service, that Prometheus Operator should scrape. A sample ServiceMonitor is as follows:
 
