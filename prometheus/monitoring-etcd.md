@@ -1,8 +1,18 @@
 # ETCD-Monitoring
 
-## 1. Check if Pods Running
+This TIL describes to monitor ETCD in:
 
-Check in the kube-system namespace that etcd pods are running. There will be static etcd pods running. Exec in those pods and curl the metrics port and path to confirm that etcd is exporting metrics. Mostly it will be one of these:
+- OpenShift Enterprise
+- Kubernetes
+- OKD
+
+## 1. Verify ETCD Pods are Running
+
+Check in the kube-system namespace that etcd pods are running, depending on the setup you should find at-least one `etcd-server` and other `etcd-server-events` pods.
+
+Just so, you know that ETCD runs as static pods in Kubernetes.
+
+Exec in those pods and curl the metrics port and path to confirm that etcd is exporting metrics. Mostly it will be one of these:
 
 - `curl localhost:2379/metrics`
 - `curl localhost:4001/metrics`
@@ -10,7 +20,7 @@ Check in the kube-system namespace that etcd pods are running. There will be sta
 
 You should be able to see the metrics in etcd pod.
 
-## 2. Check if etcd Service created
+## 2. Create ETCD Service
 
 Check if corresponding services are running of etcd. If yes, then skip this step. If no, then create service for etcd pod. And add a label to that service you will be using in the service monitor. A sample service is given below.
 
@@ -37,7 +47,7 @@ spec:
   type: ClusterIP
 ```
 
-## 3. Create ServiceMonitor
+## 3. Create ETCD ServiceMonitor
 
 Then create a ServiceMonitor for above Service, that Prometheus Operator should scrape. A sample ServiceMonitor is as follows:
 
@@ -67,9 +77,11 @@ spec:
 
 Now, etcd will be shown as targets in Prometheus, which you can see.
 
+**TODO** Add screen shot
+
 ## 4. Troubleshooting
 
-You should be able to see the etcd in Prometheus targets, If you see errors, following are some common errors that you might see:
+You should be able to see the etcd in Prometheus targets, If you see errors, following are some common errors that you might see and how to fix them:
 
 ### Get http://<master-ip>:4001/metrics context deadline exceeded
 
@@ -147,3 +159,5 @@ Now you can check in Prometheus queries, etcd metrics will be exposed based on y
 ## 6. Grafana
 
 If you have etcd version 3, you can configure this Grafana [dashboard](https://grafana.com/dashboards/3070). Note it will not work on etcd version 2.
+
+**TODO** Add screen shot
