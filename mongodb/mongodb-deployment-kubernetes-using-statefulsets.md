@@ -1,4 +1,4 @@
-# Mongodb Deployment on Kubernetes
+# Mongodb Deployment on Kubernetes using statefulsets
 
 ## Overview
 
