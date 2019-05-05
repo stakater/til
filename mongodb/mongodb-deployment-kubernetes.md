@@ -122,7 +122,7 @@ $ sudo kubectl get sfs -n <namespace-name>
 
 * Scaling statefulsets will increase the number of volumes but scaling down will not delete the volumes because it requires the users to copy the data and delete the volumes manually.
 
-* Until now the statefulsets doesn't share volumes.
+* Until now the statefulsets doesn't share volumes. Found a [question](https://stackoverflow.com/questions/43827185/what-should-be-used-for-sharing-the-volume-of-statefulset-between-its-pods-nfs) regarding this issue
 
 * An [issue](https://github.com/cvallance/mongo-k8s-sidecar/issues/57) was faced by me and it was causing me to not access mongodb because I was not using the master node of statefulset to access the database. This issue was resolved by running the command given below:
 ```
