@@ -11,12 +11,12 @@ In this section we will deploy mongodb on kubernetes by following the steps give
 * Create a [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/) using the manifest given below, this manifest is specific to AWS.
 
 ```yaml
-apiVersion: storage.k8s.io/v1beta1
-kind: StorageClass
-metadata:
-  name: mongo-storage-class
-provisioner: kubernetes.io/aws-efs
-parameters:
+apiVersion: storage.k8s.io/v1beta1  
+kind: StorageClass  
+metadata:  
+  name: fast
+provisioner: kubernetes.io/aws-ebs  
+parameters:  
   type: gp2
 ```
 
@@ -37,9 +37,9 @@ $ sudo kubectl get storageclasses
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-service
+  name: mongo
   labels:
-    sma-service: mongo-service
+    sma-service: mongo
 spec:
   ports:
   - port: 27017
@@ -69,11 +69,11 @@ metadata:
   name: mongo
 spec:
   serviceName: "mongo"
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
-        db-servicename: mongo
+        role: mongo
         environment: test
     spec:
       terminationGracePeriodSeconds: 10
@@ -91,12 +91,16 @@ spec:
           volumeMounts:
             - name: mongo-persistent-storage
               mountPath: /data/db
-
+        - name: mongo-sidecar
+          image: cvallance/mongo-k8s-sidecar
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "role=mongo,environment=test"
   volumeClaimTemplates:
   - metadata:
       name: mongo-persistent-storage
       annotations:
-        volume.beta.kubernetes.io/storage-class: "mongo-storage-class"
+        volume.beta.kubernetes.io/storage-class: "fast"
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
@@ -122,14 +126,98 @@ $ sudo kubectl get sfs -n <namespace-name>
 
 * Scaling statefulsets will increase the number of volumes but scaling down will not delete the volumes because it requires the users to copy the data and delete the volumes manually.
 
-* Until now the statefulsets doesn't share volumes. Found a [question](https://stackoverflow.com/questions/43827185/what-should-be-used-for-sharing-the-volume-of-statefulset-between-its-pods-nfs) regarding this issue
+* Until now the statefulsets doesn't share volumes. Found a [question](https://stackoverflow.com/questions/43827185/what-should-be-used-for-sharing-the-volume-of-statefulset-between-its-pods-nfs) regarding this issue. 
 
-* An [issue](https://github.com/cvallance/mongo-k8s-sidecar/issues/57) was faced by me and it was causing me to not access mongodb because I was not using the master node of statefulset to access the database. This issue was resolved by running the command given below:
+`Solution`: This issue was resolved by intiating a mongodb replication configurations by using the command given below:
+```json
+rs.initiate({ 
+  _id : "rs0", 
+  members: [
+    { _id: 0, host: "mongo-0.mongo:27017" }, 
+    { _id: 1, host: "mongo-1.mongo:27017" }, 
+    { _id: 2, host: "mongo-2.mongo:27017"}
+  ]
+})
 ```
-$ mongo
 
-$ rs.initialize()
+In the above configuration we just need to assign each host an id, one of them will be act as `Primary` while other act as `Secondaries`. 
+
+To check whether configuration have been initialized successfully use the command given below:
+
+```bash
+rs.conf()
 ```
+It will output something like this:
+
+```json
+{
+	"_id" : "rs0",
+	"version" : 1,
+	"protocolVersion" : NumberLong(1),
+	"members" : [
+		{
+			"_id" : 0,
+			"host" : "mongo-0.mongo:27017",
+			"arbiterOnly" : false,
+			"buildIndexes" : true,
+			"hidden" : false,
+			"priority" : 1,
+			"tags" : {
+				
+			},
+			"slaveDelay" : NumberLong(0),
+			"votes" : 1
+		},
+		{
+			"_id" : 1,
+			"host" : "mongo-1.mongo:27017",
+			"arbiterOnly" : false,
+			"buildIndexes" : true,
+			"hidden" : false,
+			"priority" : 1,
+			"tags" : {
+				
+			},
+			"slaveDelay" : NumberLong(0),
+			"votes" : 1
+		},
+		{
+			"_id" : 2,
+			"host" : "mongo-2.mongo:27017",
+			"arbiterOnly" : false,
+			"buildIndexes" : true,
+			"hidden" : false,
+			"priority" : 1,
+			"tags" : {
+				
+			},
+			"slaveDelay" : NumberLong(0),
+			"votes" : 1
+		}
+	],
+	"settings" : {
+		"chainingAllowed" : true,
+		"heartbeatIntervalMillis" : 2000,
+		"heartbeatTimeoutSecs" : 10,
+		"electionTimeoutMillis" : 10000,
+		"catchUpTimeoutMillis" : 60000,
+		"getLastErrorModes" : {
+			
+		},
+		"getLastErrorDefaults" : {
+			"w" : 1,
+			"wtimeout" : 0
+		},
+		"replicaSetId" : ObjectId("5ccfd17a79b0a49ce7ee22fa")
+	}
+}
+
+
+```
+
+* An issue was faced by me and it was causing me to not access mongodb because I was not using the master node of statefulset to access the database. This issue was resolved by running the command given below:
+
+`Solution`: This issue can be resolved by using the solution given above.
 
 
 
@@ -140,5 +228,5 @@ $ rs.initialize()
 | Google guidelines on mongodb deployment  |  https://codelabs.developers.google.com/codelabs/cloud-mongodb-statefulset/index.html?index=..%2F..index#0 |
 | Blog post explaing issue in google guidelines  | http://pauldone.blogspot.com/2017/06/deploying-mongodb-on-kubernetes-gke25.html  |
 | k8s Mongodb  | http://k8smongodb.net/  |
-|   |   |
+| Mongodb Replication Documentation  | https://docs.mongodb.com/manual/replication/  |
 
