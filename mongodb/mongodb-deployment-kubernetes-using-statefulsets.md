@@ -211,9 +211,9 @@ It will output something like this:
 		"replicaSetId" : ObjectId("5ccfd17a79b0a49ce7ee22fa")
 	}
 }
-
-
 ```
+One issue still exists, which is to automate the mongodb replication configuration initialization, [issue link](https://github.com/cvallance/mongo-k8s-sidecar/issues/57)
+
 
 * An issue was faced by me and it was causing me to not access mongodb because I was not using the master node of statefulset to access the database. This issue was resolved by running the command given below:
 
