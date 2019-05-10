@@ -65,6 +65,15 @@ $ sudo kubectl apply -f monitoringKubeHelmRelease.yaml -n monitoring
 $ sudo helm ls --namespace monitoring
 ```
 
+### Templatizing the chart
+To templatize the chart with values use the command given below:
+
+```
+$ sudo helm template . -f testing-new-val.yaml > testing-new-val-template.yaml
+```
+It will use the values given in `testing-new-val.yaml` file to generate `testing-new-val-template.yaml` file
+
+
 ### Issue
 In case of any issue go through the guidelines provided on this [link](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 
