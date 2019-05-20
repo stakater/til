@@ -102,7 +102,7 @@ There are two ways to inject sidecar(proxy) container:
 ## NOTES
 These notes are regarding the issue that might come up during istio deployment:
 
-* Some due to ungraceful deletion of istio helm release CRDs will not be removed properly. There are two ways to delete remaining CRDs. 
+* Sometimes due to ungraceful deletion of istio helm release CRDs will not be removed properly. There are two ways to delete remaining CRDs. 
 
   * `Method-1`: Use the command given below to get all the CRDs and delete them one by one:
   ```bash
@@ -115,3 +115,7 @@ These notes are regarding the issue that might come up during istio deployment:
   ```bash
   $ sudo kubectl delete -f <filename>.yaml
   ```
+
+* Before enabling tracing for an application following requirements needs to be fulfilled:
+  * Pods and services [requirements](https://istio.io/docs/setup/kubernetes/prepare/requirements/)
+  * Application code needs to modified a little bit so that it can handle the trace information that is part of the request. Details can be found on this [link](https://github.com/istio/istio/issues/14094)
