@@ -1,9 +1,10 @@
 # Istio Usage Guidelines
 
-This til provides information regarding Istio.
+This til provides information regarding Istio installation and usage.
 
 ## Istio Installations
-In this section provides step by step guideline istio installation.
+
+This section provides step by step guideline regarding istio installation.
 
 * Create a namespace using the manifest given below:
 
@@ -28,9 +29,9 @@ $ sudo kubectl apply -f namespace-creation-script.yaml
 
 * There are two ways to install istio in kubernetes cluster:
 
-  * Method 1: Follow the guidelines given in this link to install `istio` using kubernetes manifests. 
+  * Method 1: Follow the guidelines given in this [link](https://istio.io/docs/setup/kubernetes/install/kubernetes/) to install `istio` using kubernetes manifests. 
 
-  * Method 2: In this methid `HelmRelease` will be used for installation, `HelmRelease` manifest is given below:
+  * Method 2: In this method `HelmRelease` will be used for installation, `HelmRelease` manifest is given below:
   
   
 ```
@@ -56,7 +57,7 @@ spec:
     pilot:
       traceSampling: 1
 ```
-Currently, I using [IBM's helm chart for istio](https://github.com/IBM/charts/tree/master/stable/ibm-istio).
+Currently, I am using [IBM's helm chart for istio](https://github.com/IBM/charts/tree/master/stable/ibm-istio).
 
 
 
@@ -65,9 +66,10 @@ The above manifest will enable the istio tracing. To check whether tracing is en
 
 * Follow these [guidelines](https://istio.io/docs/examples/bookinfo/) to deploy the sample application.
 
-* Deploy the xposer for enabling ingress, ask `ali` for its kubernetes manifest.
+* Deploy the xposer for enabling ingress, ask `ali` for its kubernetes manifest for xposer.
 
 * Use the manifest given below to enable jeager ingress because the default configuration(using the helm chart value parameters) are not working correctly due to invalid documentation: 
+
 ```yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -96,4 +98,3 @@ There are two ways to inject sidecar(proxy) container:
 * By default istio inserts sidecar containers automatically, to disable it set this `sidecarInjectorWebhook.enabled` flag to false.
 
 * To manually inject sidecar use the instruction given on this [link](https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/#manual-sidecar-injection).
-
