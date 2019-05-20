@@ -34,7 +34,7 @@ $ sudo kubectl apply -f namespace-creation-script.yaml
   * Method 2: In this method `HelmRelease` will be used for installation, `HelmRelease` manifest is given below:
   
   
-```
+```yaml
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
@@ -98,3 +98,20 @@ There are two ways to inject sidecar(proxy) container:
 * By default istio inserts sidecar containers automatically, to disable it set this `sidecarInjectorWebhook.enabled` flag to false.
 
 * To manually inject sidecar use the instruction given on this [link](https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/#manual-sidecar-injection).
+
+## NOTES
+These notes are regarding the issue that might come up during istio deployment:
+
+* Some due to ungraceful deletion of istio helm release CRDs will not be removed properly. There are two ways to delete remaining CRDs. 
+
+  * `Method-1`: Use the command given below to get all the CRDs and delete them one by one:
+  ```bash
+  $ sudo kubectl get crd
+
+  $ sudo kubectl delete crd <crd-name>
+  ```
+
+  * `Method-2`: In this method we will use the manifest for crd creation to delete all the corresponding CRDs. First of all down the istio release. Move inside this folder (istio-X/install/kubernetes/helm/istio-init/files/) and run the command given below on each file:
+  ```bash
+  $ sudo kubectl delete -f <filename>.yaml
+  ```
