@@ -92,6 +92,11 @@ spec:
 
 * Each of the application service needs to be visible in the jeager services drop down as well as in the dependencies graph.
 
+### Nginx Ingress Controller
+
+The reason for using nginx-ingress is that our other services are already using it to create ingress (a load balancer is attached with nginx-ingress) but istio creates a new service of type LoadBalancer to expose its services and we don't want to use it. An [issue](https://github.com/istio/istio/issues/14328) has been created regarding how to use nginx-ingress controller with istio.
+
+
 ## Proxy(sidecar) Container Injection
 There are two ways to inject sidecar(proxy) container:
 
