@@ -45,7 +45,7 @@ Your tmp.json file might resemble the following output:
         "uid": "b50c9ea4-ec2b-11e8-a0be-fa163eeb47a5"
     },
     "spec": {
-        "finalizers": 
+        "finalizers": []
     },
     "status": {
         "phase": "Terminating"
