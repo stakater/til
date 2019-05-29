@@ -91,3 +91,7 @@ Note: The finalizer parameter is removed.
 ```
 kubectl get namespaces
 ````
+
+
+## Reason
+This issue will raise if namespace is deleted without gracefully deleting its resources. An issue exists on kubernetes repository for this problem [link](https://github.com/kubernetes/kubernetes/issues/60807). It is unresolved until now. 
