@@ -3,8 +3,10 @@
 We use a custom version of openshift/ose-logging-fluentd:v3.11.0 which doesnt send logs to elasticsearch
 For openshift logs, the easiest would be to use fluentd to collect all the logs directly
 Some sources can be
+
+```
 # It contains all logs including apiserver, etcd and other containers / pods because in 3.11 everything is containerized and we don't need separate inputs for each of the kubernetes / openshift components
-```<source>
+<source>
   @type tail
   @id in_tail_container_logs
   path /var/log/containers/*.log
