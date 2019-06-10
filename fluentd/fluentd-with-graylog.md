@@ -17,12 +17,14 @@ Some sources can be
     @type json
     time_format %Y-%m-%dT%H:%M:%S.%NZ
   </parse>
-</source>```
+</source>
+```
 And a useful filter is the kubernetes_metadata which you can use after source
 ```<filter kubernetes.**>
   @type kubernetes_metadata
   @id filter_kube_metadata
-</filter>```
+</filter>
+```
 It will add all the necessary metadata to your logs in order to distinguish between pods, namespaces and container level logs.
 Then you can use the gelf plugin to send to graylog and then use the native forwarder plugin to send to logstash as well if desired
 https://github.com/bodhi-space/fluent-plugin-gelf-hs
