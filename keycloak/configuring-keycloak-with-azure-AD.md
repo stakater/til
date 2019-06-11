@@ -1,4 +1,4 @@
-# Steps to configure Microsoft KeyCloak with Azure Active Directory
+# Steps to configure KeyCloak with Microsoft Azure Active Directory
 
 0. Follow [this](https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration#deploy-cluster) tutorial if you want to deploy Azure Active directory with Azure Kubernetes Service AKS
 
