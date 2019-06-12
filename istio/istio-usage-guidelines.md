@@ -27,11 +27,35 @@ Create the above namespace using the command given below:
 $ sudo kubectl apply -f namespace-creation-script.yaml
 ```
 
+* There are two ways to intall crds:
+
+  * `Method 1`: Using the crd files provided in istio reposiotry.
+  * `Method 2`: Using the istio-init chart:
+
+  ```yaml
+  apiVersion: flux.weave.works/v1beta1
+  kind: HelmRelease
+  metadata:
+    name: istio-init
+    namespace: tracing
+  spec:
+    releaseName: istio-init
+    chart:
+      repository: https://gcsweb.istio.io/gcs/istio-prerelease/prerelease/1.1.0/1.1.0/charts/
+      name: istio-init
+      version: 1.1.0
+  ```
+  Install the chart using the command given below:
+  ```bash
+  $ sudo kubectl install -f istio-init.yaml -n <namespace-name>
+  ```
+  It will create two jobs that will install all the crds.
+
 * There are two ways to install istio in kubernetes cluster:
 
-  * Method 1: Follow the guidelines given in this [link](https://istio.io/docs/setup/kubernetes/install/kubernetes/) to install `istio` using kubernetes manifests. 
+  * `Method 1`: Follow the guidelines given in this [link](https://istio.io/docs/setup/kubernetes/install/kubernetes/) to install `istio` using kubernetes manifests. 
 
-  * Method 2: In this method `HelmRelease` will be used for installation, `HelmRelease` manifest is given below:
+  * `Method 2`: In this method `HelmRelease` will be used for installation, `HelmRelease` manifest is given below:
   
   
 ```yaml
@@ -39,26 +63,29 @@ apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
   name: istio
-  namespace: istio-system
+  namespace: tracing
 spec:
   releaseName: istio
   chart:
-    repository: https://raw.githubusercontent.com/IBM/charts/master/repo/stable
-    name: ibm-istio
-    version: 1.0.5
+    repository: https://gcsweb.istio.io/gcs/istio-prerelease/prerelease/1.1.0/1.1.0/charts/
+    name: istio
+    version: 1.1.0
   values:
     global:
       enableTracing: true
     tracing:
       enabled: true
-    jaeger:
-      ingress:
-        enabled: true
     pilot:
-      traceSampling: 1
+      traceSampling: 100
+    prometheus:
+      enabled: false
 ```
-Currently, I am using [IBM's helm chart for istio](https://github.com/IBM/charts/tree/master/stable/ibm-istio).
+Currently, I am using [istio helm chart](https://github.com/istio/istio/tree/master/install/kubernetes/helm/istio).
 
+There are two repositories for chart that are given below:
+
+* [Repository # 1](https://gcsweb.istio.io/gcs/istio-prerelease/prerelease/1.1.0/1.1.0/charts/)
+* [Repository # 2](https://storage.googleapis.com/istio-release/releases/charts/)
 
 
 ## Enable Tracing
@@ -123,4 +150,4 @@ These notes are regarding the issue that might come up during istio deployment:
 
 * Before enabling tracing for an application following requirements needs to be fulfilled:
   * Pods and services [requirements](https://istio.io/docs/setup/kubernetes/prepare/requirements/)
-  * Application code needs to modified a little bit(example can be found in this [link](https://github.com/istio/istio/blob/master/samples/bookinfo/src/productpage/productpage.py#L130) of istio sample application) so that it can handle the trace information that is part of the request. Details can be found on this [link](https://github.com/istio/istio/issues/14094)  
+  * Application code needs to modified a little bit(example can be found in this [link](https://github.com/istio/istio/blob/master/samples/bookinfo/src/productpage/productpage.py#L130) of istio sample application) so that it can handle the trace information that is part of the request. Details can be found on this [link](https://github.com/istio/istio/issues/14094)
