@@ -41,7 +41,7 @@ A ClusterRoleBinding which will bind a user to the role `pod-reader`:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: ali-view
+  name: user-view
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -76,4 +76,4 @@ kube-api-server tells the dashboard which user is accessing the dashboard and wh
 
 In AKS the server/kube-api-server is managed by the Azure itself and hence we cannot pass these parameters i.e. `--oidc-issuer-url ` and `--oidc-client-id` to refer to the OIDC client. The provided API command for AKS `az aks create` command referenced [here](https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az-aks-create) does not support oidc connections as of now. Therefore we cannot pass oidc parameters to the AKS service.
 
-kube-api-server managed by the Azure itself has no knowledge of oidc client and hence it cannot provide access contol based on the KeyCloak authentication token for dashboard service.
+kube-api-server managed by the Azure itself has no knowledge of external oidc client. It supports Azure AD only and cannot provide access contol based on the KeyCloak authentication token for dashboard service.
