@@ -151,3 +151,6 @@ These notes are regarding the issue that might come up during istio deployment:
 * Before enabling tracing for an application following requirements needs to be fulfilled:
   * Pods and services [requirements](https://istio.io/docs/setup/kubernetes/prepare/requirements/)
   * Application code needs to modified a little bit(example can be found in this [link](https://github.com/istio/istio/blob/master/samples/bookinfo/src/productpage/productpage.py#L130) of istio sample application) so that it can handle the trace information that is part of the request. Details can be found on this [link](https://github.com/istio/istio/issues/14094)
+  
+  
+* Sidecar will not be inject if a pod has the annotation sidecar.istio.io/inject: "false" then Istio will not inject the sidecar in it.
