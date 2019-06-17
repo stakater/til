@@ -217,11 +217,7 @@ objects:
             initialDelaySeconds: 60
             periodSeconds: 10
             successThreshold: 1
-            timeoutSeconds: 1
-          resources:
-            limits:
-              cpu: ${SERVICE_CPU}
-              memory: ${SERVICE_MEMORY}
+            timeoutSeconds: 1          
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
     test: false
@@ -264,14 +260,6 @@ parameters:
   description: Name of service
   required: true
   value: hazelcast-test-app
-- name: SERVICE_MEMORY
-  description: Amount of memory for service
-  required: true
-  value: "2000Mi"
-- name: SERVICE_CPU
-  description: Amount of cpu for service
-  required: true
-  value: "200m"
 ```
 
 ### Configuration
