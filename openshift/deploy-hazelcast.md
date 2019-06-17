@@ -267,7 +267,7 @@ parameters:
 - name: SERVICE_MEMORY
   description: Amount of memory for service
   required: true
-  value: "450Mi"
+  value: "2000Mi"
 - name: SERVICE_CPU
   description: Amount of cpu for service
   required: true
