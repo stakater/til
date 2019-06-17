@@ -193,7 +193,7 @@ objects:
       spec:
         containers:
         - name: ${SERVICE_NAME}
-          image: "stakater/hazelcast:1.0.0"
+          image: "stakater/hazelcast-test-app:1.0.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
