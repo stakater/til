@@ -131,6 +131,10 @@ There are two ways to inject sidecar(proxy) container:
 
 * To manually inject sidecar use the instruction given on this [link](https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/#manual-sidecar-injection).
 
+### Disable sidecar injection in a pod
+
+* By default istio inserts sidecar containers in each pods(only if namespace has `istio-injection: enabled`) automatically, to disable sidecar injection in a pod add this annotation `sidecarInjectorWebhook.enabled: "false"` to pod annotations of a deployment.
+
 ## NOTES
 These notes are regarding the issue that might come up during istio deployment:
 
