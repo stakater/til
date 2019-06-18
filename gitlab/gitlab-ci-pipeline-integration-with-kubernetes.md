@@ -24,7 +24,22 @@ stack automatically. Therefore gitlab will be used to deploy these stacks.
   - `Method 1: Using Gitlab UI`: This method requires manual steps(which can be automated but it will require a lot of effort). 
                                  Guidelines can be found on this [link](https://docs.gitlab.com/ee/user/project/clusters/index.html#adding-an-existing-kubernetes-cluster). I haven't explored this method in details.
 
-  - `Mehtod 2: Using Gitlab CI/CD Environment Variables`: In this method cluster's configurations(kube config) will be stored as a Gitlab CI/CD environment variables, which can be accessed by runner during pipeline execution. 
-                                                          Details about env variables can be found on this [link](https://docs.gitlab.com/ee/ci/variables/).
+  - `Mehtod 2: Using Gitlab CI/CD Environment Variables`: In this method cluster's configurations(kube config) will be stored as a Gitlab CI/CD environment variables, which can be accessed by runner during pipeline execution. Details about env variables can be found on this [link](https://docs.gitlab.com/ee/ci/variables/). Details can be found below.
+
+
+
+### Using Gitlab CI/CD Environment Variables
+
+The section provides guidelines on how to access kubernetes cluster using Gitlab CI/CD environment variables.
+
+* New CI/CD env variables can be created by going to `Setting -> CI/CD -> Variables`. Add the variable (named as `KUBE_CONFIG` and it will store kubernetes cluster config) and save it. <add security aspects here>
+
+* Now create a `.gitlab-ci.yaml` in the project. It will contains the steps that will be executed in pipeline.
+
+* In pipeline first we will extract the value of `KUBE_CONFIG` and store it as kubernetes config.
+
+* A debain image containing kubectl installed will be used.
+
+* Once everything is configured now we can access kubernetes cluster from the gitlab runner.
 
 
