@@ -86,8 +86,7 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
     stage: deploy
     script:
         - kubectl get namespaces
-```
-
+    ```
 
 ## Refrences
 
