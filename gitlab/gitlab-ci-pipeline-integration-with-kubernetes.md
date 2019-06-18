@@ -3,7 +3,7 @@
 ## Overview.
 
 This document provides guideline on how to access kubenetes cluster from gitlab pipeline runner. The reason to use gitlab is to automate the Stakater
-stacks deployment on Kubernetes. Stacks gloabl and release are used by other stack for deployment, but currently there is no way to deploy global and release
+stacks deployment on Kubernetes. Stacks global and release are used by other stack for deployment, but currently there is no way to deploy global and release
 stack automatically. Therefore gitlab will be used to deploy these stacks.
 
 ## Configuration 
@@ -45,20 +45,25 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 * To store different cloud providers kube config we can name the kubeconfig variables in this format: `KUBE_CONFIG_AZURE`, `KUBE_CONFIG_AWS`. One issue that might appear is how to store the kube config in CI/CD environment variables. Steps are given below:
 
     1- Convert the kube config to `base64` encoded string.
+    
     ```bash
-    $ cat config | base64 > data.txt
+    $ cat config | base64 > config.txt
     ```
+    
     2- We can use this script python script to remove the next line char from the config lines.
 
     ```python
-    f = open("guru99.txt", "r")
+    f = open("config.txt", "r")
     config = ""
     for line in f:
-      config += line.split("\n")
+        config += line.split("\n")[0]
     print(config)
     ```
+    
     3- If next line chart is not removed then the config cannot be decoded.
+
     4- Config can be decoded by using this command:
+    
     ```bash
     <config> | base64 -d 
     ```
