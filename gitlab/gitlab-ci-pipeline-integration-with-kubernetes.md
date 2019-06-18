@@ -42,4 +42,49 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 
 * Once everything is configured now we can access kubernetes cluster from the gitlab runner.
 
+* To store different cloud providers kube config we can name the kubeconfig variables in this format: `KUBE_CONFIG_AZURE`, `KUBE_CONFIG_AWS`. One issue that might appear is how to store the kube config in CI/CD environment variables. Steps are given below:
 
+    1- Convert the kube config to `base64` encoded string.
+    ```bash
+    $ cat config | base64 > data.txt
+    ```
+    2- We can use this script python script to remove the next line char from the config lines.
+
+    ```python
+    f = open("guru99.txt", "r")
+    config = ""
+    for line in f:
+      config += line.split("\n")
+    print(config)
+    ```
+    3- If next line chart is not removed then the config cannot be decoded.
+    4- Config can be decoded by using this command:
+    ```bash
+    <config> | base64 -d 
+    ```
+
+*  Gitlab pipeline manifest is given below:
+
+```yaml
+image:
+  name: aliartiza75/kubectl:0.0.2
+
+before_script:
+  - mkdir ~/.kube/
+  - echo $KUBE_CONFIG_AWS | base64 -d > config
+  - mv config ~/.kube/
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - kubectl get namespaces
+    - make install NAMESPACE=logging
+```
+
+
+## Refrences
+
+* https://about.gitlab.com/2017/09/21/how-to-create-ci-cd-pipeline-with-autodeploy-to-kubernetes-using-gitlab-and-helm/
