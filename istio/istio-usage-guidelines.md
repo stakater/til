@@ -159,4 +159,4 @@ These notes are regarding the issue that might come up during istio deployment:
   
 * Sidecar will not be inject if a pod has the annotation sidecar.istio.io/inject: "false" then Istio will not inject the sidecar in it.
 
-* Currently, istio doesn't provide a way to add annotations to istio/tracing deployment. A issue has been created regarding this [issue](https://github.com/istio/istio/issues/14908). Currently, we will not use the alpha version (said by rasheed) and will wait until stable version arrives. 
+* Currently, istio doesn't provide a way to add annotations to istio/tracing deployment. A issue has been created regarding this [issue](https://github.com/istio/istio/issues/14908). Currently, we will not use the alpha version (said by rasheed) and will wait until stable version arrives. Istio team plans to use both helm and kustomize.

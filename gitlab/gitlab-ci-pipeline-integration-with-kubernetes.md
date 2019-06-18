@@ -38,11 +38,11 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 
 * In pipeline first we will extract the value of `KUBE_CONFIG` and store it as kubernetes config.
 
-* A debain image containing kubectl installed will be used.
+* A debian image containing kubectl installed will be used.
 
 * Once everything is configured now we can access kubernetes cluster from the gitlab runner.
 
-* To store different cloud providers kube config we can name the kubeconfig variables in this format: `KUBE_CONFIG_AZURE`, `KUBE_CONFIG_AWS`. One issue that might appear is how to store the kube config in CI/CD environment variables. Steps are given below:
+* One issue that might appear is how to store the kube config in CI/CD environment variables. Steps to store env vars are given below:
 
     1- Convert the kube config to `base64` encoded string.
     
@@ -50,7 +50,7 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
     $ cat config | base64 > config.txt
     ```
     
-    2- We can use this script python script to remove the next line char from the config lines.
+    2- We can use this script python script to remove the next line char from the config file.
 
     ```python
     f = open("config.txt", "r")
@@ -70,23 +70,22 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 
 *  Gitlab pipeline manifest is given below:
 
-```yaml
-image:
-  name: aliartiza75/kubectl:0.0.2
+    ```yaml
+    image:
+    name: aliartiza75/kubectl:0.0.2
 
-before_script:
-  - mkdir ~/.kube/
-  - echo $KUBE_CONFIG_AWS | base64 -d > config
-  - mv config ~/.kube/
+    before_script:
+    - mkdir ~/.kube/
+    - echo $KUBE_CONFIG_AWS | base64 -d > config
+    - mv config ~/.kube/
 
-stages:
-  - deploy
+    stages:
+    - deploy
 
-deploy:
-  stage: deploy
-  script:
-    - kubectl get namespaces
-    - make install NAMESPACE=logging
+    deploy:
+    stage: deploy
+    script:
+        - kubectl get namespaces
 ```
 
 
