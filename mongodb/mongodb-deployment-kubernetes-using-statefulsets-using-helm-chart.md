@@ -39,7 +39,7 @@ apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
   name: mongodb-deployment
-  namespace: sma
+  namespace: aaa
 spec:
   releaseName: mongodb-deployment
   chart:
@@ -112,7 +112,7 @@ It will output something like this:
 	"members" : [
 		{
 			"_id" : 0,
-			"host" : "mongodb-deployment-primary-0.mongodb-deployment-headless.sma.svc.cluster.local:27017",
+			"host" : "mongodb-deployment-primary-0.mongodb-deployment-headless.aaa.svc.cluster.local:27017",
 			"arbiterOnly" : false,
 			"buildIndexes" : true,
 			"hidden" : false,
@@ -125,7 +125,7 @@ It will output something like this:
 		},
 		{
 			"_id" : 1,
-			"host" : "mongodb-deployment-secondary-0.mongodb-deployment-headless.sma.svc.cluster.local:27017",
+			"host" : "mongodb-deployment-secondary-0.mongodb-deployment-headless.aaa.svc.cluster.local:27017",
 			"arbiterOnly" : false,
 			"buildIndexes" : true,
 			"hidden" : false,
@@ -138,7 +138,7 @@ It will output something like this:
 		},
 		{
 			"_id" : 2,
-			"host" : "mongodb-deployment-arbiter-0.mongodb-deployment-headless.sma.svc.cluster.local:27017",
+			"host" : "mongodb-deployment-arbiter-0.mongodb-deployment-headless.aaa.svc.cluster.local:27017",
 			"arbiterOnly" : true,
 			"buildIndexes" : true,
 			"hidden" : false,
