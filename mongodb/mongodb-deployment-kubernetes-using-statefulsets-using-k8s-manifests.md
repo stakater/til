@@ -39,7 +39,7 @@ kind: Service
 metadata:
   name: mongo
   labels:
-    sma-service: mongo
+    aaa-service: mongo
 spec:
   ports:
   - port: 27017
