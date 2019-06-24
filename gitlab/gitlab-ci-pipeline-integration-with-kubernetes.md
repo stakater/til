@@ -72,21 +72,54 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 
     ```yaml
     image:
-    name: aliartiza75/kubectl:0.0.2
+      name: stakater/gitlab:0.0.2
 
     before_script:
-    - mkdir ~/.kube/
-    - echo $KUBE_CONFIG_AWS | base64 -d > config
-    - mv config ~/.kube/
+
+      # configuration kubernetes access in pipeline
+      - mkdir ~/.kube/
+      - echo $KUBE_CONFIG_AWS | base64 -d > config
+      - mv config ~/.kube/
+
+      # cloning repo
+      - echo "git clone https://$GITHUB_TOKEN@$STACK_REPO" > script.sh
+      - chmod +x script.sh
+
+      # extracting repo name from the URL
+      - BASE_NAME=$(basename $STACK_REPO)
+      - REPO_NAME=${BASE_NAME%.*}
 
     stages:
     - deploy
 
     deploy:
-    stage: deploy
-    script:
-        - kubectl get namespaces
+      stage: deploy
+      script:
+
+        # moving inside cloned repository directory
+        - ./script.sh
+        - cd $REPO_NAME
+
+        # checkout to the branch that user wants to deploy. If user provides invalid or null
+        # value then the command won't value due to true flag
+        - git checkout $BRANCH_NAME || true
+
+        # intalling stack on kubernetes cluster
+        # - make install NAMESPACE=monitoring PROVIDER_NAME=$PROVIDER
     ```
+
+* Pipeline required following CI/CD environment variables:
+
+| Variable | Description |
+|---|---|
+| KUBE_CONFIG_AWS  | Kubernetes configuration file |
+| STACK_REPO  | URL of the stack repository that need to be deployed. From each repository URL on the part after this section `https://` is required. Like from `https://github.com/stakater/til.git` URL we required only the `github.com/stakater/til.git` part |
+| GITHUB_TOKEN  | Github Personal Access token |
+
+
+If anything needs to be changes regarding these CI/CD env variables. Just change them at these locations:
+* .gitlab-ci.yml.
+* Gitlab CI/CD environment variables.
 
 ## Refrences
 
