@@ -20,7 +20,7 @@ parameters:
   type: gp2
 ```
 
-Storage class will be create at kubernetes cluster level and will be used by statefulsets to create volumes for each replica. To create storage class use the command given below:
+Storage class will be create at kubernetes cluster level and will be used by statefulsets to create pvc for each replica. To create storage class use the command given below:
 
 ```bash
 $ sudo kubectl apply -f storage class
@@ -124,9 +124,9 @@ $ sudo kubectl get sfs -n <namespace-name>
 
 ### Scaling
 
-* Scaling statefulsets will increase the number of volumes but scaling down will not delete the volumes because it requires the users to copy the data and delete the volumes manually.
+* Scaling statefulsets will increase the number of pvc but scaling down will not delete the pvc because it requires the users to copy the data and delete the pvc manually.
 
-* Until now the statefulsets doesn't share volumes. Found a [question](https://stackoverflow.com/questions/43827185/what-should-be-used-for-sharing-the-volume-of-statefulset-between-its-pods-nfs) regarding this issue. 
+* Until now the statefulsets doesn't share data. Found a [question](https://stackoverflow.com/questions/43827185/what-should-be-used-for-sharing-the-volume-of-statefulset-between-its-pods-nfs) regarding this issue. 
 
 `Solution`: This issue was resolved by intiating a mongodb replication configurations by using the command given below:
 ```json

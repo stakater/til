@@ -113,7 +113,7 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 | Variable | Description |
 |---|---|
 | KUBE_CONFIG_AWS  | Kubernetes configuration file |
-| STACK_REPO  | URL of the stack repository that need to be deployed. From each repository URL on the part after this section `https://` is required. Like from `https://github.com/stakater/til.git` URL we required only the `github.com/stakater/til.git` part |
+| STACK_REPO  | URL of the stack repository that need to be deployed. From each repository URL only the part after this section `https://` is required. Like from `https://github.com/stakater/til.git` URL we require only the `github.com/stakater/til.git` part |
 | GITHUB_TOKEN  | Github Personal Access token |
 
 

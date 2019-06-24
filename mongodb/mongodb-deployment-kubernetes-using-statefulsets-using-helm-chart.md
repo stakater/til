@@ -20,7 +20,7 @@ parameters:
   type: gp2
 ```
 
-Storage class will be create at kubernetes cluster level and will be used by statefulsets to create volumes for each replica. To create storage class use the command given below:
+Storage class will be create at kubernetes cluster level and will be used by statefulsets to create pvc for each replica. To create storage class use the command given below:
 
 ```bash
 $ sudo kubectl apply -f storage class
@@ -94,7 +94,7 @@ $ sudo kubectl get statefulsets -n <namespace-name>
 
 ### Scaling
 
-* Scaling statefulsets will increase the number of volumes but scaling down will not delete the volumes because it requires the users to copy the data and delete the volumes manually.
+* Scaling statefulsets will increase the number of pvc but scaling down will not delete the pvc because it requires the users to copy the data and delete the pvc manually.
 
 * To check whether configuration have been initialized successfully use the command given below on each pod:
 
