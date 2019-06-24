@@ -102,7 +102,7 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 
         # checkout to the branch that user wants to deploy. If user provides invalid or null
         # value then the command won't value due to true flag
-        - git checkout $BRANCH_NAME || true
+        - git checkout $BRANCH_NAME
 
         # intalling stack on kubernetes cluster
         # - make install NAMESPACE=monitoring PROVIDER_NAME=$PROVIDER
@@ -115,6 +115,7 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 | KUBE_CONFIG_AWS  | Kubernetes configuration file |
 | STACK_REPO  | URL of the stack repository that need to be deployed. From each repository URL only the part after this section `https://` is required. Like from `https://github.com/stakater/til.git` URL we require only the `github.com/stakater/til.git` part |
 | GITHUB_TOKEN  | Github Personal Access token |
+| BRANCH_NAME  | If a user doesn;t wants to deploy the master branch he can specify the branch he want so deploy in this env var |
 
 
 If anything needs to be changes regarding these CI/CD env variables. Just change them at these locations:
