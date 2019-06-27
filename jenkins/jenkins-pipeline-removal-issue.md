@@ -18,4 +18,4 @@ Following issue were raised:
 
 * `Issue 1 and 2`: was resolved by installing the plugin `workflow-cps:2.7.0` which was somehow missed during last update.
 
-* `Issue-3`: was resolved by upgrading the `oic version from 1.4 to 1.6`.
+* `Issue-3`: was resolved by upgrading the `oic-auth version from 1.4 to 1.6`.
