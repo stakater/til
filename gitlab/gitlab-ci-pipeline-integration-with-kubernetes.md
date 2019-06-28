@@ -51,13 +51,9 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
     ```
     
     2- We can use this script python script to remove the next line char from the config file.
-
-    ```python
-    f = open("config.txt", "r")
-    config = ""
-    for line in f:
-        config += line.split("\n")[0]
-    print(config)
+    
+    ```bash
+    $ base64 config.txt -w0
     ```
     
     3- If next line chart is not removed then the config cannot be decoded.
@@ -72,20 +68,49 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
 
   ```yaml
   image:
-    name: stakater/gitlab:0.0.2
+    name: stakater/gitlab:0.0.3
 
   before_script:
 
-      # configuration kubernetes access in pipeline
+    - if [ $STACK == "global" ]; then \
+    -     echo "Gloabl Stack"; \
+    -     source ./global.sh; \
+    
+    - elif [ $STACK == "release" ]; then \ 
+    -     echo "Release Stack"; \ 
+    -     source ./release.sh; \
+    
+    - elif [ $STACK == "logging" ]; then \
+    -     echo "Logging Stack"; \ 
+    -     source ./logging.sh; \
+    
+    - elif [ $STACK == "monitoring" ]; then \
+    -     echo "Monitoring Stack"; \ 
+    -     source ./monitoring.sh; \
+    
+    - elif [ $STACK == "tracing" ]; then \
+    -     echo "Tracing Stack"; \ 
+    -     source ./tracing.sh; \
+    
+    - else \
+    -     echo "Invalid stack name provided"
+    -     exit 1 
+    - fi
+
+    - echo "Displaying non-sensitive config parameters on pipeline logs"
+    - echo $BRANCH
+    - echo $INSTALL_PVC
+    - echo $NAMESPACE
+    - echo $PROVIDER
+    - echo $REPO_URL
+    - echo $TARGET
+
+    - echo "configuration kubernetes access in pipeline"
     - mkdir ~/.kube/
-    - echo $KUBE_CONFIG_AWS | base64 -d > config
+    - echo $KUBE_CONFIG | base64 -d > config
     - mv config ~/.kube/
 
-      # cloning repo
-    - echo "git clone https://$GITHUB_TOKEN@$REPO_URL" > script.sh
-    - chmod +x script.sh
-
-      # extracting repo name from the URL
+    - echo "Extracting repository name from the URL"
     - BASE_NAME=$(basename $REPO_URL)
     - REPO_NAME=${BASE_NAME%.*}
 
@@ -95,18 +120,24 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
   deploy:
     stage: deploy
     script:
+      
+      - echo "Cloning repository and redirecting the output to black hole because we don't want GITHUB_TOKEN to be visible on pipeline logs"
+      - git clone https://$GITHUB_TOKEN@$REPO_URL > /dev/null
 
-      # cloning repository
-      - ./script.sh > /dev/null
-
-      # moving inside cloned repository directory
+      - echo "Moving inside cloned repository directory"
       - cd $REPO_NAME
 
-      # checkout to the branch that user wants to deploy.
+      - echo "Checkout to the deployment branch"
       - git checkout $BRANCH
 
-      # deploying stack on kubernetes cluster.
-      - if [ -z "$NAMESPACE" ]; then       make $TARGET PROVIDER_NAME=$PROVIDER; else       make $TARGET NAMESPACE=$NAMESPACE PROVIDER_NAME=$PROVIDER; fi
+      - echo "Deploying stack on kubernetes cluster"
+
+      #- if [ -z "$NAMESPACE" ]; then       make $TARGET PROVIDER_NAME=$PROVIDER INSTALL_PVC=$INSTALL_PVC; else       make $TARGET NAMESPACE=$NAMESPACE PROVIDER_NAME=$PROVIDER INSTALL_PVC=$INSTALL_PVC; fi
+      - if [ -z "$NAMESPACE" ]; then \
+      -       make $TARGET PROVIDER_NAME=$PROVIDER INSTALL_PVC=$INSTALL_PVC; \
+      - else \
+      -       make $TARGET NAMESPACE=$NAMESPACE PROVIDER_NAME=$PROVIDER INSTALL_PVC=$INSTALL_PVC; \      
+      - fi
   ```
 
 * Pipeline required following CI/CD environment variables:
