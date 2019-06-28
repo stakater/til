@@ -64,13 +64,13 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
     <config> | base64 -d 
     ```
 
-* Gitlab `.gitlab-ci.yml` file uses the manifest given below for configuration:
+* Gitlab `.gitlab-ci.yml` file uses the manifest given below to create environment varibale:
   ```bash
-  export BRANCH="azure-capability"
+  export BRANCH="X"
   export INSTALL_PVC="false"
-  export NAMESPACE="monitoring"
-  export PROVIDER="aws"
-  export REPO_URL="github.com/stakater/StakaterKubeHelmMonitoring.git"
+  export NAMESPACE="X"
+  export PROVIDER="X"
+  export REPO_URL="X"
   export TARGET="install-dry-run"
   ```
 
@@ -83,27 +83,27 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
   before_script:
 
     - if [ $STACK == "global" ]; then \
-    -     echo "Gloabl Stack"; \
-    -     source ./global.sh; \
+    -     echo "X Stack"; \
+    -     source ./X.sh; \
     
     - elif [ $STACK == "release" ]; then \ 
-    -     echo "Release Stack"; \ 
-    -     source ./release.sh; \
+    -     echo "X Stack"; \ 
+    -     source ./X.sh; \
     
     - elif [ $STACK == "logging" ]; then \
-    -     echo "Logging Stack"; \ 
-    -     source ./logging.sh; \
+    -     echo "X Stack"; \ 
+    -     source ./X.sh; \
     
     - elif [ $STACK == "monitoring" ]; then \
-    -     echo "Monitoring Stack"; \ 
-    -     source ./monitoring.sh; \
+    -     echo "X Stack"; \ 
+    -     source ./X.sh; \
     
     - elif [ $STACK == "tracing" ]; then \
-    -     echo "Tracing Stack"; \ 
-    -     source ./tracing.sh; \
+    -     echo "X Stack"; \ 
+    -     source ./X.sh; \
     
     - else \
-    -     echo "Invalid stack name provided"
+    -     echo "Invalid X name provided"
     -     exit 1 
     - fi
 
