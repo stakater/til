@@ -64,6 +64,16 @@ The section provides guidelines on how to access kubernetes cluster using Gitlab
     <config> | base64 -d 
     ```
 
+* Gitlab `.gitlab-ci.yml` file uses the manifest given below for configuration:
+  ```bash
+  export BRANCH="azure-capability"
+  export INSTALL_PVC="false"
+  export NAMESPACE="monitoring"
+  export PROVIDER="aws"
+  export REPO_URL="github.com/stakater/StakaterKubeHelmMonitoring.git"
+  export TARGET="install-dry-run"
+  ```
+
 *  Gitlab pipeline manifest is given below:
 
   ```yaml
