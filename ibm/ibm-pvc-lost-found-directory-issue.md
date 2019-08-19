@@ -113,7 +113,6 @@ spec:
     app: mysql
 ```
 
-
 ## References
 
 | Description | Link |
@@ -121,3 +120,4 @@ spec:
 | lost+found directory | https://www.ibm.com/support/knowledgecenter/en/SSSH27_9.0.1/com.ibm.rational.clearcase.cc_admin.doc/topics/r_vobadm_stgmgmt_lf.htm |
 | VOBs and Versioned Objects | https://www.ibm.com/support/knowledgecenter/SSSH27_9.0.0/com.ibm.rational.clearcase.ccrc.help.doc/topics/c_vobver.htm |
 | mysql --intialize issue | https://github.com/docker-library/mysql/issues/290 |
+| purpose of lost+folder in linux | https://unix.stackexchange.com/questions/18154/what-is-the-purpose-of-the-lostfound-folder-in-linux-and-unix |
