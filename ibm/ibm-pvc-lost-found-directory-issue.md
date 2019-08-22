@@ -62,9 +62,9 @@ spec:
     spec:
 
       initContainers:
-      - image: debian:stable-slim
+      - image: busybox
         name: mysql-volume-cleaner
-        command: ["rm", "-r", "/var/lib/mysql/lost+found"]
+        args: [/bin/sh, -c, 'rm -rf /var/lib/mysql/lost+found || true']
         volumeMounts:
         - mountPath: /var/lib/mysql
           name: mysql-pvc
