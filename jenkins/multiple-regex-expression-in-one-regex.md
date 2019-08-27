@@ -19,4 +19,5 @@ Example:
 Matches:
 
 1- 0.0.0-production-2-SNAPSHOT
+
 2- 0.0.0-develop-2-SNAPSHOT
