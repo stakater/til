@@ -55,3 +55,10 @@ image:
   repository: image-repository
   tag: 0.0.0-develop-1-XXX
 ```
+
+To get the public key use the command given below:
+
+
+```bash
+kubectl -n <namespace-name> logs deployment/<flux-deployment-name> | grep identity.pub | cut -d '"' -f2
+```
