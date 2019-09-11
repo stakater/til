@@ -61,4 +61,22 @@ What we can do is that the for the users we want to grant access, we will modify
 Second issue is that if we run the pipeline in the gitlab runner, all the configuration related to eks cluster will be lost once the pipeline execution is completed.
 
 
+third point it that the `aws cli` must be configured on the node because in kubeconfig it uses awscli for authentication.
+
+## Problem-4
+
+It is related to the deletion of the cluster and its resources. We can easily deploy the cluster using the `master` branch of the `terraform-aws-eks` repository. 
+
+But when we try to delete the cluster we get this error that the subnets for the vpc doesn't exist. After looking at the logs of the gitlab pipeline I found out that the subnets for the vpc gets created successfully and their information also exists in `terraform.tfstate` file. But somehow terraform doesn't know the subnets.
+
+In other case if we use the already existsing vpc and its subnets then the cluster is deployed and deleted successfully.
+
+### Solution
+This issue can be resolved by using and existing vpc.
+
+## Problem-5
+
+eks allow specific number of pod on a node although the resource memory and cpu is not utilized completely.
+
+
 
