@@ -78,5 +78,9 @@ This issue can be resolved by using and existing vpc.
 
 eks allow specific number of pod on a node although the resource memory and cpu is not utilized completely.
 
+Number of pods per node can be found using this table.
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI
+
 
 
