@@ -83,4 +83,15 @@ Number of pods per node can be found using this table.
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI
 
 
+While deleting the eks cluster make sure these resources are deleted successfully:
 
+```
+autoscaling group
+nat gateways
+interfaces
+eks-cluster
+delete cloudwatch los
+elastic ips
+load balancers
+EFS
+```
