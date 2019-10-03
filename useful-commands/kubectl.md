@@ -13,6 +13,11 @@ When Running Kubectle run if
 kubectl delete all --all -n $(NAMESPACE)
 ```
 
+## Delete a specific resource forcefully
+```
+kubectl delete pods/nginx --grace-period=0 --force
+```
+
 ## Create a pod without writing YAML
 ```
 kubectl run nginx --image=nginx --dry-run -o yaml -n default > pod.yaml
