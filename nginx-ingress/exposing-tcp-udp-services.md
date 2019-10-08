@@ -5,6 +5,8 @@ TCP or UDP services. Although, there is a workaround, using nginx-ingress we can
 `--udp-services-configmap` to map an exposed(external world) port to a corresponding kubernetes service using a configmap.
 Following is an example of exposing tcp port for mongodb:
 
+In nginx-ingress service: 
+
 ```yaml
 ...
 spec:
@@ -13,6 +15,8 @@ spec:
      - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
 ...
 ```
+
+The corresponding configmap:
 
 ```yaml
 ...
