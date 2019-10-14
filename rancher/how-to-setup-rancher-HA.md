@@ -5,9 +5,9 @@
 ## Following are the steps required to deploy a k8s cluster using rancher:
 1. [Understanding HA configuration](#understand-HA)
 2. [Create & set-up VMs(nodes)](#create-vm)
-3. [Create load balancer](create-loadbalancer)
-4. [Installing pre-requisites](install-prereq)
-5. [Set up DNS](set-up-dms)
+3. [Create load balancer](#create-loadbalancer)
+4. [Installing pre-requisites](#install-prereq)
+5. [Set up DNS](#set-up-dms)
 6. [Provision a k8s cluster using rke(rancher kubernetes engine)](#rke)
 7. [Install helm, and deploy rancher using helm into the cluster](#rancher)
 8. [Deploy a k8s cluster using rancher GUI](#rancher-gui)
