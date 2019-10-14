@@ -60,6 +60,7 @@ Also, open the following ports for incoming traffic: 80, 443, 22, 2376, 2379, 23
 
 ### 3. Create Load Balancer
 On azure: https://www.youtube.com/watch?v=-VMPzVoo5Nk
+
 On aws: https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-getting-started.html
 
 Create a load balancer and make it balance load between the three VMs that we created
@@ -68,7 +69,7 @@ Create a load balancer and make it balance load between the three VMs that we cr
 On your devstation install the following: 
 1. [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) (Client Version: v1.15.3 - Server Version: v1.13.11+IKS)
 2. [helm](https://helm.sh/docs/using_helm/#installing-helm) (v2.12.1 or higher)
-3. [rke] (https://rancher.com/docs/rke/latest/en/installation/#download-the-rke-binary) (0.3.0)
+3. [rke](https://rancher.com/docs/rke/latest/en/installation/#download-the-rke-binary) (0.3.0)
 
 ### 5. Add DNS entry
 Add a DNS entry either in azure dns or aws route 53. We used route 53 and added an CNAME record for our desired hostname `rancher.test.stakater.com` pointing to the address of our load balancer.
@@ -154,10 +155,17 @@ Access `rancher.test.stakater.com` and create a new password. Rancher is now up 
 
 ## Useful links: 
 https://www.youtube.com/watch?v=WPzvF_-MVkg
+
 https://www.youtube.com/watch?v=NpT9RraqKdY
+
 https://blog.kubernauts.io/enterprise-grade-rancher-deployment-guide-ubuntu-fd261e00994c
+
 https://itnext.io/setup-a-basic-kubernetes-cluster-with-ease-using-rke-a5f3cc44f26f
+
 https://github.com/jmreicha/awesome-rancher
+
 https://rancher.com/docs/rancher/v2.x/en/installation/ha/
+
 https://rancher.com/docs/rancher/v2.x/en/troubleshooting/
+
 https://rancher.com/docs/rancher/v2.x/en/troubleshooting/rancherha/
