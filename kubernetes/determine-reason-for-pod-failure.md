@@ -23,4 +23,5 @@ terminated state from
 `kubectl get pod -n namespace-name pod-name -o go-template="{{range .status.containerStatuses}}{{.lastState.terminated}}{{end}}"`
 
 This process is do-able from within the dashboard as well:
-[dashboard](previous_pod_logs.png)
+
+![dashboard](previous_pod_logs.png)
