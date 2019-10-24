@@ -35,6 +35,16 @@ $ cat /proc/sys/net/ipv4/tcp_tw_recycle  # default value is 0
 
 * To change the value of these variables:
 
+* Increase the limit of open files so that we don't hit the `too many open files issue`. This issue is caused when a process tries to open too many files
+
+```bash
+# to get the default value which in 1024. It will print all other limits
+$ ulimit -a
+
+# To increase the limit in the current session
+$ ulimit -n 65000
+```
+
 ```bash
 # to change the value of the above variable
 $ echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse # assign 1 to enable it
