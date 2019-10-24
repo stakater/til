@@ -9,16 +9,6 @@ This document have the guideline on how to reproduce the connection timeout issu
 
 Go through the document and links provided in the [til/tcp](../tcp) folder.
 
-### Details
-
-The tests was performed on the cluster with following configurations:
-
-| Name | CPUs | Memory | MAX IOPS |
-|---|---|---|---|
-
-It will be added later.
-
-
 ### Test Guidelines
 
 Follow these guideline to run the tests on the openshift cluster:
