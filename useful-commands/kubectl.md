@@ -148,3 +148,13 @@ kubectl cordon my_node
 ```
 kubectl drain my_node
 ```
+
+## Create configmap using a file
+```
+kubectl create cm configmap --from-file=config.txt
+```
+
+## Check Endpoints (HOSTIP:PORT) of Applications
+```
+kubectl get ep
+```
