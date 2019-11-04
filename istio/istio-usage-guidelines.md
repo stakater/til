@@ -47,7 +47,7 @@ $ sudo kubectl apply -f namespace-creation-script.yaml
   ```
   Install the chart using the command given below:
   ```bash
-  $ sudo kubectl install -f istio-init.yaml -n <namespace-name>
+  $ sudo kubectl apply -f istio-init.yaml -n <namespace-name>
   ```
   It will create two jobs that will install all the crds.
 
