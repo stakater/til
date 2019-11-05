@@ -32,3 +32,16 @@ oc adm policy add-scc-to-user -z prometheus-node-exporter hostaccess -n monitori
 ```
 
 * To enable the node-exporter to scrap metrices from all nodes make sure to not assign any node specific lables to the monitoring project. Otherwise it will only scrap data from those nodes.
+
+
+## Troubleshooting
+
+### Monitoring
+
+* When the cluster is deployed, it add a `openshift-monitoring` project for cluster monitoring. But we will not use it because its grafana is [read only](https://docs.openshift.com/container-platform/4.1/monitoring/cluster-monitoring/about-cluster-monitoring.html). We will deploy our own monitoring stack.
+
+* But before deploying the stack we will have to delete their `openshift-monitoring` project if the cluster monitoring is enabled.
+
+### Logging
+
+* 
