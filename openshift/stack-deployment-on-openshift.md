@@ -5,7 +5,9 @@
 
 1. Openshift uses routes instead of ingress therefore routes files are added in each stack.
 
-2. When the custom domain is provided we have to manually enter an enter in the App domain service for the application deployed in openshift.
+2. When the custom domain is provided we have to manually enter in the App domain service for the application deployed in openshift.
+
+3. Default VM type for infra nodes is DS2_v3 which only allows 4 LUN disks to get attached. Resize the VMs after deployment. Follow steps [here](volume-attach-restriction-on-azure-ocp.md)
 
 ## Monitoring Stack Deployment
 
