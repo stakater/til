@@ -6,6 +6,16 @@ When using K8s/Openshift we create many volumes/PVCs that need to get attached t
 
 ## Solution
 
-Create a storage class of type `azure-file` instead of `azure-disk` and use it instead of block storage.
+Resize the VMs to a different type. We have resized to DS2_v2 for Infra nodes. which gives
+- 2 vCPUs
+- 7 GB RAM
+- 8 Data Disks
+- 6400 IOPS
+- 14 GB Temp. Storage 
 
-To use `azure-file` follow this [tutorial](https://docs.microsoft.com/en-us/azure/aks/azure-files-dynamic-pv)
+## How to Resize.
+
+- Select the node you want to resize from resource group
+- On the left panel select size, It will display different sizes that are available for resizing
+- Select the type you want to resize your node to
+- Click `Resize` to resize. (The VM will be restarted when resizing.)
