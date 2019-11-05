@@ -48,7 +48,7 @@ oc adm policy add-scc-to-user -z prometheus-node-exporter hostaccess -n monitori
 
 * When default logging stack is deployed we get this error ![insufficient-memory](images/insufficient-memory.png)
 
-  this issue is due amount of RAM required with is 16 GB but our instance max RAM size if 8 GB. ![ram-size](image/ram-size.png).
+  this issue is due amount of RAM required with is 16 GB but our instance max RAM size if 8 GB. ![ram-size](images/ram-size.png).
 
   its size was changed to 6 GB and also change the resource limit of the deployment to 3 min to 6 max.
 
