@@ -71,6 +71,3 @@ In the dockerfile we explicitly change the user to Jenkins. So what happens in t
 #### Solutions
 
 This issue was resolved by using an older version of the builder maven image in which no user was being created to run the script which means default root user was used to run the script and it worked perfectly fine.
-
-
-which was causing the issue because in the kubernetes environment
