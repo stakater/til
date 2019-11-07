@@ -52,4 +52,25 @@ oc adm policy add-scc-to-user -z prometheus-node-exporter hostaccess -n monitori
 
   its size was changed to 6 GB and also change the resource limit of the deployment to 3 min to 6 max.
 
+* Once the above paramters are configured, es-data-master pods starts to run but it gives following errors:
 
+  ![es-logs](images/es-logs.png)
+
+
+### Jenkins
+
+In the builder maven [image](https://github.com/stakater-docker/builder-maven/blob/master/Dockerfile), a user(Jenkins) is being created to run the mvn commnad. It works completely fine in the kubernetes, but in the openshift environment it gets stuck at the script execution part. 
+
+By looking inside the container at run time in kubernetes environment we found out that the owner of the folders inside the container was jenkins. 
+
+But in the openshift environment the owner was a user with id 1000.
+
+In the dockerfile we explicitly change the user to Jenkins. So what happens in the openshift environment is that when we try to run the mvn script with Jenkins user it gets stuck because the owner of the script file is user with id 1000.
+
+
+#### Solutions
+
+This issue was resolved by using an older version of the builder maven image in which no user was being created to run the script which means default root user was used to run the script and it worked perfectly fine.
+
+
+which was causing the issue because in the kubernetes environment
