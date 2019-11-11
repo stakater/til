@@ -1,6 +1,6 @@
 # Optimizing nginx
 
-I used the following set of configuration and it helped me optimized the response time and TTFB for nginx.
+I used the following set of configuration and it helped me optimized the response time and TTFB for calls passing through nginx.
 
 ```yaml
 kind: ConfigMap
