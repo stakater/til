@@ -30,7 +30,7 @@ metadata:
 Or else you can run the following command 
 `kubectl annotate namespace namespace-name field.cattle.io/projectId=<clusterId>:<projectId>` 
 
-## *The issue*: 
+## **The issue**: 
 Both of these seem like viable solution but both add a redundant dependecy of installing `Rancher CLI`. Since, projects are 
 rancher managed objects and don't exist in kubernetes own realm *currently* there is no way of retrieving the projectId 
 without using rancher cli. To retrieve project id using rancher cli use the following script:
