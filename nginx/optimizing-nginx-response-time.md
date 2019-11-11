@@ -15,7 +15,7 @@ data:
   worker-processes: "24"
   worker-connections: "100000"
   worker-rlimit-nofile: "102400"
-  worker-cpu-affinity: "auto 111111111111111111111111"
+  worker-cpu-affinity: "auto"
   keepalive: "200"
   hsts-preload: "true"
   hsts-max-age: "31536000"
