@@ -114,21 +114,23 @@ This issue was resolved by using an older version of the builder maven image in 
 
     2. `Cluster Dashboard`: Cluster console URL is available at this location `Cluster Resource Group ->  Deployments -> redhat.openshift-container-platform-XXXXX -> Outputs -> OpenshiftConsoleURL`.
 
-4. Add an entry in the domain for the cluster infra load balancer ip. 
+4. Add an wildcard entry in the Route53 for the cluster infra load balancer ip. 
 
-5. Resize the infra nodes to DS2_v2
+5. Resize the infra nodes to `DS2_v2` because default DS2_v3 only allows 4 disk to be attached to a node but more disks are required.
 
-6. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-stackator` branch.
+6. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-workshop-stakater` branch.
 
 7. Run the `pre-install.sh` script. It will install and configure required dependencies for stacks deployment.
 
-8. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It will a `ssh` key that must be added to the repositories's allowed SSH keys.
+8. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It generates a `ssh` key which is available in the pod logs that must be added to the repositories's deploy keys.
 
-9. To check whether flux was able access the repository check the last used time of the SSH key of the project.
+9. To check whether flux was able access the repository check the last used time of the deploy key of the project.
 
-10. Flux will deploy the all the dependencies but the Helm Operator logs should be monitored to see whether the things were deployed successfully because helm operator enqueues the releases before it process it.
+10. Flux will deploy the all the dependencies but the Helm Operator logs should be monitored to see whether the stacks were deployed successfully because helm operator enqueues the releases before it processes it, which takes ~5-10 minutes.
 
 9. Run the `post-install.sh` script. It will create routes for the stacks services. Sometimes it give the error that specify port, this issue is caused by the un-deployed services. For the error generating route check whether its respective service exists.
+
+10. 
 
 11. To enable the Jenkins pipelines following credentials must be created:
 
