@@ -74,7 +74,7 @@ spec:
       enabled: true
 ```
 
-#4. Once, istio is done setting up it's required ecosystem. Lets deploy a sample application(nodemart front-end) and expose
+# 4. Once, istio is done setting up it's required ecosystem. Lets deploy a sample application(nodemart front-end) and expose
 it to external traffic using istio:
 
 Deploy the following manifest or any app of your choice, the key being annotating it with `sidecar.istio.io/inject: "true"`.
@@ -145,7 +145,7 @@ service. For external traffic influx to this service `nodemart-web` at port `420
 allowing incoming traffic to the cluster based on port, protocol and certificates, a **virutalservice** that specifies
 the routing information to find the correct service.
 
-##1. Install certificates:
+## 1. Install certificates:
 Generate required certificate and place the appropriate values using the following manifest: 
 
 ```yaml
@@ -160,7 +160,7 @@ metadata:
 type: tls
 ``` 
 
-##2. Create Gateway:
+## 2. Create Gateway:
 
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -196,7 +196,7 @@ seperate/shared will be explained later. To use `istio ingressgateway service` w
 This gateway will accept traffic for host `web.hostname.com` at port 443 and redirect all incoming traffic on port `80`(http)
 to 443, implementing ssl redirect. In `tls` blocking we are using the certificates we installed in the previous step.
 
-##3. Create virtualservice:
+## 3. Create virtualservice:
 
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -220,7 +220,7 @@ spec:
 
 *That's it, your service is exposed to the external world using istio* :)
 
-##5. Setting up external-dns:
+## 4. Setting up external-dns:
 You can use external-dns to crete DNS entry using the following manifest:
 
 ```yaml
@@ -267,7 +267,7 @@ spec:
             key: aws_secret_access_key
 ```
 
-##Issues Faced:
+## Issues Faced:
 1. Istio doesn't allow multiple gateways against the same TLS certficate, so we had to go with a seperate namespace 
 `istio-shared` and keep our gateways and virtualServices in that particular namespace so that they are accessible to
 each other. You can specify multiple hosts(it's an array) or use wildcard "*.hostname.com" in gateway to allow multiple
