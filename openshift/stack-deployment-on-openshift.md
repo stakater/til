@@ -130,7 +130,6 @@ This issue was resolved by using an older version of the builder maven image in 
 
 9. Run the `post-install.sh` script. It will create routes for the stacks services. Sometimes it give the error that specify port, this issue is caused by the un-deployed services. For the error generating route check whether its respective service exists.
 
-10. 
 
 11. To enable the Jenkins pipelines following credentials must be created:
 
@@ -138,3 +137,21 @@ This issue was resolved by using an older version of the builder maven image in 
     2. Github token api.
 
 10. The routes for the services are available in this [link](add playbook link).
+
+11. To deploy application follow these steps:
+
+    1. Run the `install` target of the `nordmart-dev-tools` pipeline. It will install flux.
+    
+    2. Copy the flux public ssh key from the the flux pod and add it to the repository's deploy keys.
+    
+    3. It will now monitor the `nordmart-dev-apps` repository.
+
+    4. Make sure that the images specified in the `nordmart-dev-apps/releases` exists in the repository. 
+    
+    **NOTE**: If image doesn't exist it will generate an error that it is not able to pull the specified image although image still exists. There is a catch that new image tag will not be deployed until a succesful deployment is done.
+
+    5. Following secrets are required for the jenkins:
+
+        1. jenkins-maven-settings
+        2. jenkins-hub-api-token
+        3. slack-notification-hook
