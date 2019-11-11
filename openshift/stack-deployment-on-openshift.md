@@ -155,3 +155,5 @@ This issue was resolved by using an older version of the builder maven image in 
         1. jenkins-maven-settings
         2. jenkins-hub-api-token
         3. slack-notification-hook
+
+    6. Sometime jenkins create image for the branch name but not for the PR and in dev env the flux looks for the image with PR regex `^([0-9]+.[0-9]+.[0-9]+-PR-[0-9]{2}-[0-9]+-SNAPSHOT)$`. To resolve this issue just rerun the PR pipeline.
