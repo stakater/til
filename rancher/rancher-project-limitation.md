@@ -47,6 +47,9 @@ for NAMESPACE in NAMESPACES_TO_ANNOTATE; do kubectl annotate namespace $NAMESPAC
 projects.
 
 Relevant links:
+
 https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/
+
 https://github.com/rancher/rancher/issues/16493
+
 https://github.com/rancher/rancher/issues/23376
