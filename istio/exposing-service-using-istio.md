@@ -276,7 +276,11 @@ Reference: https://istio.io/docs/ops/troubleshooting/network-issues/#404-errors-
 
 
 ## Relevant links:
+
 https://istio.io/docs/concepts/
+
 https://www.infoworld.com/article/3328817/what-is-istio-the-kubernetes-service-mesh-explained.html
+
 https://blog.jayway.com/2018/10/22/understanding-istio-ingress-gateway-in-kubernetes/
+
 https://rinormaloku.com/istio-practice-gateways/
