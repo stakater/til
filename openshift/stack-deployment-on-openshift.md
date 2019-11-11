@@ -71,3 +71,29 @@ In the dockerfile we explicitly change the user to Jenkins. So what happens in t
 #### Solutions
 
 This issue was resolved by using an older version of the builder maven image in which no user was being created to run the script which means default root user was used to run the script and it worked perfectly fine.
+
+
+## Cluster deployment guidelines
+
+1. Create a cluster using the `Red Hat OpenShift Container Platform Self-Managed` from the Azure Market place.
+
+2. Provide the cluster configuration in deployment wizard and deploy the cluster.
+
+3. Once cluster is deployed, the cluster can be access by two methods:
+
+    1. `Kube config`: It is available on the bastion node. Bastion node can be accessed using the public key provided at the time of cluster deployment. Get the public ip of bastion node from the Azure portal `Cluster Resource Group -> `. Use the command given below to access the bastion node.
+    ```bash
+    ssh -i ~/.ssh/private_key <cluster-admin-name>@<bastion-node-public-ip>
+    ```
+
+    2. `Cluster Dashboard`: Cluster console URL is available at this location `Cluster Resource Group ->  Deployments -> redhat.openshift-container-platform-XXXXX -> Outputs -> OpenshiftConsoleURL`.
+
+4. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-stackator` branch.
+
+5. Run the `pre-install.sh` script. It will install and configure required dependencies for stacks deployment.
+
+6. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It will a `ssh` key that must be added to the repositories's allowed SSH keys.
+
+7. Run the `post-install.sh` script. It will generate routes for the stacks services.
+
+
