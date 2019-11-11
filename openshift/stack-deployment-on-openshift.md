@@ -75,27 +75,64 @@ This issue was resolved by using an older version of the builder maven image in 
 
 ## Cluster deployment guidelines
 
-1. Create a cluster using the `Red Hat OpenShift Container Platform Self-Managed` from the Azure Market place.
+1. Create a cluster using the `Red Hat OpenShift Container Platform Self-Managed` from the Azure Marketplace.
 
-2. Provide the cluster configuration in deployment wizard and deploy the cluster.
+2. Provide the cluster configuration in deployment wizard and deploy the cluster. List  of required parameters are given below:
+
+    | Parameter Name | Description |
+    |---|---|
+    | Admin Username | Cluster admin username |
+    | Add User SSH public key | Cluster admin public SSH key |
+    | Subscription | Subscription name |
+    | Resource Group | Create a new resource group |
+    | Location | Europe west |
+    | OCP Cluster Name Prefix | NIL |
+    | Node sizes | Size should be changes to D2s_v3 |
+    | Key vault Resource Group Name | NIL |
+    | Key Vault Name | NIL |
+    | Secret Name | NIL |
+    | Virtual Network | Default new existing virtual network |
+    | Default CIDR Setting or Custom IP Range  | Default setting should be used |
+    | Openshift Admin User Password | NIL |
+    | RedHat Subscription Manager User Name | NIL |
+    | RedHat Subscription Manager User Password | NIL |
+    | RedHat Subscription Manager Openshift Pool ID | NIL |
+    | RedHat Subscription Manager Openshift Pool ID for Broker / Master Nodes | NIL |
+    | Azure AD Service Principal Client ID GUID | NIL |
+    | Azure AD Service Principal Client ID Secret | NIl |
+    | Container Native Storage | Disable it. |
+    | Cluster Logging | Default logging for the cluster. Enable it. |
+    | Configure Metrics for cluster | Disable it. |
+    | Default Router Subdomain | Subdomain that will be used for routes in the cluster. |
 
 3. Once cluster is deployed, the cluster can be access by two methods:
 
-    1. `Kube config`: It is available on the bastion node. Bastion node can be accessed using the public key provided at the time of cluster deployment. Get the public ip of bastion node from the Azure portal `Cluster Resource Group -> `. Use the command given below to access the bastion node.
+    1. `Kube config`: It is available on the bastion node. Bastion node can be accessed using the public key provided at the time of cluster deployment. Get the public ip of bastion node from the Azure portal `Cluster Resource Group -> Bastion public IP`. Use the command given below to access the bastion node.
     ```bash
     ssh -i ~/.ssh/private_key <cluster-admin-name>@<bastion-node-public-ip>
     ```
 
     2. `Cluster Dashboard`: Cluster console URL is available at this location `Cluster Resource Group ->  Deployments -> redhat.openshift-container-platform-XXXXX -> Outputs -> OpenshiftConsoleURL`.
 
-4. Add an entry in the domain for the cluster load balancer ip. 
+4. Add an entry in the domain for the cluster infra load balancer ip. 
 
-5. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-stackator` branch.
+5. Resize the infra nodes to DS2_v2
 
-6. Run the `pre-install.sh` script. It will install and configure required dependencies for stacks deployment.
+6. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-stackator` branch.
 
-7. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It will a `ssh` key that must be added to the repositories's allowed SSH keys.
+7. Run the `pre-install.sh` script. It will install and configure required dependencies for stacks deployment.
 
-8. Run the `post-install.sh` script. It will generate routes for the stacks services.
+8. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It will a `ssh` key that must be added to the repositories's allowed SSH keys.
 
-9. The routes for the services are available in this [link](add playbook link).
+9. To check whether flux was able access the repository check the last used time of the SSH key of the project.
+
+10. Flux will deploy the all the dependencies but the Helm Operator logs should be monitored to see whether the things were deployed successfully because helm operator enqueues the releases before it process it.
+
+9. Run the `post-install.sh` script. It will create routes for the stacks services. Sometimes it give the error that specify port, this issue is caused by the un-deployed services. For the error generating route check whether its respective service exists.
+
+11. To enable the Jenkins pipelines following credentials must be created:
+
+    1. Stakater user
+    2. Github token api.
+
+10. The routes for the services are available in this [link](add playbook link).
