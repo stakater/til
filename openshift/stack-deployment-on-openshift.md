@@ -96,4 +96,5 @@ This issue was resolved by using an older version of the builder maven image in 
 
 7. Run the `post-install.sh` script. It will generate routes for the stacks services.
 
+8. The routes for the services are available in this [link](add playbook link)
 
