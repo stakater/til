@@ -88,13 +88,14 @@ This issue was resolved by using an older version of the builder maven image in 
 
     2. `Cluster Dashboard`: Cluster console URL is available at this location `Cluster Resource Group ->  Deployments -> redhat.openshift-container-platform-XXXXX -> Outputs -> OpenshiftConsoleURL`.
 
-4. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-stackator` branch.
+4. Add an entry in the domain for the cluster load balancer ip. 
 
-5. Run the `pre-install.sh` script. It will install and configure required dependencies for stacks deployment.
+5. Clone the Stakater Infrastructure [repository](https://github.com/stakater/StakaterInfrastructure) and checkout to `azure-ocp-stackator` branch.
 
-6. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It will a `ssh` key that must be added to the repositories's allowed SSH keys.
+6. Run the `pre-install.sh` script. It will install and configure required dependencies for stacks deployment.
 
-7. Run the `post-install.sh` script. It will generate routes for the stacks services.
+7. The above script will install flux, which will deploy all the stacks in the cluster but it requires access to the repository. Access the flux pod logs in the `flux` namespace. It will a `ssh` key that must be added to the repositories's allowed SSH keys.
 
-8. The routes for the services are available in this [link](add playbook link)
+8. Run the `post-install.sh` script. It will generate routes for the stacks services.
 
+9. The routes for the services are available in this [link](add playbook link).
