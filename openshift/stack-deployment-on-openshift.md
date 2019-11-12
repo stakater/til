@@ -40,9 +40,32 @@ oc adm policy add-scc-to-user -z prometheus-node-exporter hostaccess -n monitori
 
 ### Monitoring
 
-* When the cluster is deployed, it add a `openshift-monitoring` project for cluster monitoring. But we will not use it because its grafana is [read only](https://docs.openshift.com/container-platform/4.1/monitoring/cluster-monitoring/about-cluster-monitoring.html). We will deploy our own monitoring stack.
+* When the cluster is deployed, it adds a `openshift-monitoring` project for cluster monitoring. But we will not use it because its grafana is [read only](https://docs.openshift.com/container-platform/4.1/monitoring/cluster-monitoring/about-cluster-monitoring.html). We will deploy our own monitoring stack.
 
 * But before deploying the stack we will have to delete their `openshift-monitoring` project if the cluster monitoring is **enabled**.
+
+* We wanted to use the node-exporter of `openshift-monitoring` with prometheus, alert-manager and grafana of stakater monitoring stack. We created a service monitor in the prometheus-operator manifest:
+
+```
+        - endpoints:
+            - interval: 30s
+              port: https
+              scheme: https
+              targetPort: 0
+          jobLabel: k8s-app
+          name: openshift-monitoring-sm
+          namespaceSelector:
+            matchNames:
+              - openshift-monitoring
+          selector:
+            matchLabels:
+              k8s-app: node-exporter
+
+```
+  the targets were created but we got certificates issue:
+
+![certificates-issue](images/monitoring-certificate-issue.png)
+
 
 ### Logging
 
@@ -157,3 +180,4 @@ This issue was resolved by using an older version of the builder maven image in 
         3. slack-notification-hook
 
     6. Sometime jenkins create image for the branch name but not for the PR and in dev env the flux looks for the image with PR regex `^([0-9]+.[0-9]+.[0-9]+-PR-[0-9]{2}-[0-9]+-SNAPSHOT)$`. To resolve this issue just rerun the PR pipeline.
+
