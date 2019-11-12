@@ -5,7 +5,7 @@
 This document explains the guideline on how to deploy upstream istio on openshift. 
 
 ## Guideline
-Will be added
+Deployment guideline is given on this [link](https://github.com/stakater/til/blob/master/istio/istio-on-openshift.md).
 
 ## Issues
 
