@@ -1,7 +1,6 @@
 # Exposing service using istio
 
-Istio by definition is `An open platform to connect, manage, and secure microservices`. It comprises of the following 
-components:
+Istio by definition is `An open platform to connect, manage, and secure microservices`. Istio helps us to apply centrally managed(in one place) policies, get consistent visibility(logging, tracing, monitoring) and have consistent traffic beahviour throughout our cluster(or even multiple clusters). It comprises of the following components:
 
 ## Data plane:
 - **Envoy:** Sidecar proxies to manage traffic from and to the service
