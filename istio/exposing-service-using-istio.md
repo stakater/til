@@ -3,14 +3,21 @@
 Istio by definition is `An open platform to connect, manage, and secure microservices`. It comprises of the following 
 components:
 
+## Data plane:
 - **Envoy:** Sidecar proxies to manage traffic from and to the service
-- **Pilot:** Responsible for service discovery and configuring envoy(s)
+
+## Control Plane:
+- **Pilot:** Responsible for service discovery and configuring envoys
 - **Mixer:** Centralized component responsible for providing/managing Istio-policy(policy control) and 
          istio-telemetry(telemetry collection) for usage policies and gathering telemetry data, it enforces policies on the 
-         envoys
-- **Gateway:** Serves as an ingress port for external traffic
-- **Citadel:** Responsible for key and certificate management
+         envoys.
+- **Citadel:** Responsible for key and certificate management, and enabling mTLS between services
 - **Galley:** Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.
+
+## Configurational Objects:
+- **Gateway:** Serves as an ingress port for external traffic
+- **Virtual Service:**: Defines traffic routing rules that are used for routing against the specified host name. Routes the
+                        traffic to it's destination(configured service)
 
 Now that we have the basic knowledge regarding istio, lets move forward with deploying istio. We'll use helm charts for the
 deployment:
@@ -74,8 +81,7 @@ spec:
       enabled: true
 ```
 
-# 4. Once, istio is done setting up it's required ecosystem. Lets deploy a sample application(nodemart front-end) and expose
-# it to external traffic using istio:
+# 4. Once, istio is done setting up it's required ecosystem. Lets deploy a sample application(nodemart front-end) and expose it to external traffic using istio:
 
 Deploy the following manifest or any app of your choice, the key being annotating it with `sidecar.istio.io/inject: "true"`.
 Istio will recognize the service and deploy a side-car container, envoy proxy side-car, with our application container.
