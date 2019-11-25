@@ -45,7 +45,7 @@ metadata:
 spec:
   peers:
   - mtls: {}
-
+```
 
 ## Create destination rule:
 
