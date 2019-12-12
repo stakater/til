@@ -19,6 +19,7 @@ data:
   keepalive: "200"
   hsts-preload: "true"
   hsts-max-age: "31536000"
+  proxy-buffer-size: "256k"
 ```
 
 Using `ssl-protocols: TLSv1.3` can improve TTFB further. 
