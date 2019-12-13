@@ -28,8 +28,8 @@ stakater-platform-clusterName-alerts
 
 In the current sceanrio we have a lot of false alerts their list is given below:
 
-	1. **WatchDog:** This is an alert meant to ensure that the entire alerting pipeline is functional.
-	2. **Kubelet:** Kubelet scraping is under testing so therefore, these alert is being generated.
+	1. WatchDog: This is an alert meant to ensure that the entire alerting pipeline is functional.
+	2. Kubelet: Kubelet scraping is under testing so therefore, these alert is being generated.
 	 
 
 
