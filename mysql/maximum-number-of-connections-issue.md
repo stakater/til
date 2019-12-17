@@ -51,7 +51,7 @@ data:
     max-allowed-packet=67108864
 ```
 
-Consume this configmap in your mysql manifest:
+* Consume this configmap in your mysql manifest:
 
 ```yaml
 ...
