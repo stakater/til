@@ -2,7 +2,7 @@
 
 Kubelet on IBM cluster run as a service on the cluster nodes instead of k8s pod. Detailed description of this issue is given in this [link](https://github.com/helm/charts/issues/19550).
 
-After searching about this issue i got an reply from which states that:
+After searching about this issue i got an reply from IBM's guy(on slack channel) which states that:
 
 
 ```bash
