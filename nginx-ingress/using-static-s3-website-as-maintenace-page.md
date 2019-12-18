@@ -11,7 +11,7 @@ Once everything is setup just annotate your ingress like this:
 Where `http://namespacename-servicename-port.s3-website-ap-southeast-1.amazonaws.com` is the URL to your S3 static hosted 
 website.
 
-** Note: Whenever you are trying to implement a maintenance page redirect for your website ensure that it's handled at your 
+**Note: Whenever you are trying to implement a maintenance page redirect for your website ensure that it's handled at your 
 reverse proxy(if any) and at the loadbalancer/server side as well, like in case of AWS use cloudfront. **
 
 
