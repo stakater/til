@@ -12,7 +12,7 @@ Where `http://namespacename-servicename-port.s3-website-ap-southeast-1.amazonaws
 website.
 
 ** Note: Whenever you are trying to implement a maintenance page redirect for your website ensure that it's handled at your 
-reverse proxy(if any) and at the loadbalancer/server side as well, like in case of AWS use cloudfront.
+reverse proxy(if any) and at the loadbalancer/server side as well, like in case of AWS use cloudfront. **
 
 
 ## Useful links:
