@@ -1,7 +1,7 @@
 # Using static website hosted on s3 as maintenance page
 
 Create an S3 bucket with the name of the service against which you want to use a maintenance page and use that for static 
-website hosting.**Ensure that bucket name is based on this pattern `namespacename-servicename-port`**. This is the 
+website hosting. **Ensure that bucket name is based on this pattern `namespacename-servicename-port`**. This is the 
 `proxy_upstream_name` that nginx ingress controller will autogenerate and if there is a mismatch in name you won't be 
 redirected to the maintenance page. 
 
