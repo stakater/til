@@ -59,7 +59,7 @@ spec:
         enable-opentracing: "false"
 ```
 
-## For all the traffic going through nginx ingress controller:
+## 1. For all the traffic going through nginx ingress controller:
 
 We can apply whitelisting on the controller directly using `http-snippet`. Modify the manifest like this:
 
@@ -100,7 +100,7 @@ data:
   server-snippet: "if ($deny_access) { return 403; }"
 ```
 
-## For a specific ingress(using ingress):
+## 2. For a specific ingress(using ingress):
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -122,10 +122,11 @@ spec:
 ```
 
 You can update value of `path` to apply policies on specific sub urls. 
+
 **Con: You'll have to create multiple redudant ingresses for diffrent sub URLs**
  
 
-## For an ingress using configuration snippet(didn't work properly):
+## 3. For an ingress using configuration snippet(didn't work properly):
 
 Use the following annotation on your ingress for adding a location block in server configuration block.
 
