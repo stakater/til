@@ -120,6 +120,19 @@ This issue can be resolved by creating a new aws credentials like id and secret.
 Sometime Cluster worker nodes are not accessible by the master. This issue still exists, therefore i deployed the cluster in another vpc.
 
 
+## Problem-10
+I faced another issue that aws-iam-authenticator is not detected in $PATH. Although path existed in host system.
+
+### Solution
+I resolved this issue by passing another argument in the configurations
+
+```tf
+kubeconfig_aws_authenticator_command = "/root/bin/aws-iam-authenticator"
+```
+the above argument specifies the absolute path of the `aws-iam-authenticator` binary in the docker image.
+
+
+
 
 
 
