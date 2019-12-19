@@ -84,7 +84,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPe
 
 
 While deleting the eks cluster make sure these resources are deleted successfully:
-
+These things will only be deployed when we are using new vpc.
 ```
 autoscaling group
 nat gateways
@@ -95,3 +95,32 @@ elastic ips
 load balancers
 EFS
 ```
+
+## Problem-6
+Sometime vpc subnets have tags on them that cause them the cluster nodes to not get deployed.
+
+### Solution
+
+Delete the tags
+
+
+## Problem-7
+
+cluster was deployed on the `us-east-2` successfully but it was not being deployed on `eu-west-1`. 
+
+## Problem-8
+
+AWS credentials issue was caused by the invalid aws configuration.
+
+### Solution
+This issue can be resolved by creating a new aws credentials like id and secret.
+
+## Problem-9
+
+Sometime Cluster worker nodes are not accessible by the master. This issue still exists, therefore i deployed the cluster in another vpc.
+
+
+
+
+
+
