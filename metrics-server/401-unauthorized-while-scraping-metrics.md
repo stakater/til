@@ -10,9 +10,12 @@ E0101 10:44:52.672756       1 manager.go:111] unable to fully collect metrics: [
 
 Metrics-server now uses webhook authentication so for it to work properly, make sure Kubelet has webhook authentication enabled.
 To do this, pass the following parameters to Kubelet, when creating the cluster:
+
+```
 anonymousAuth: false
 authenticationTokenWebhook: true
 authorizationMode: Webhook
+```
 
 
 Now, in case of `aks` we are using managed cluster so we don't have access to kubelet and the value of `authenticationTokenWebhook` is set to false. 
