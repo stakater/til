@@ -1,0 +1,45 @@
+# Comparing Deployments and DeploymentConfigs
+
+https://docs.openshift.com/container-platform/4.3/applications/deployments/what-deployments-are.html#deployments-comparing-deploymentconfigs_what-deployments-are
+
+Both Kubernetes Deployments and OpenShift Container Platform-provided DeploymentConfigs are supported in OpenShift Container Platform; however, it is recommended to use Deployments unless you need a specific feature or behavior provided by DeploymentConfigs.
+
+The following sections go into more detail on the differences between the two object types to further help you decide which type to use.
+
+## Design
+One important difference between Deployments and DeploymentConfigs is the properties of the CAP theorem that each design has chosen for the rollout process. DeploymentConfigs prefer consistency, whereas Deployments take availability over consistency.
+
+For DeploymentConfigs, if a node running a deployer Pod goes down, it will not get replaced. The process waits until the node comes back online or is manually deleted. Manually deleting the node also deletes the corresponding Pod. This means that you can not delete the Pod to unstick the rollout, as the kubelet is responsible for deleting the associated Pod.
+
+However, Deployments rollouts are driven from a controller manager. The controller manager runs in high availability mode on masters and uses leader election algorithms to value availability over consistency. During a failure it is possible for other masters to act on the same Deployment at the same time, but this issue will be reconciled shortly after the failure occurs.
+
+## DeploymentConfigs-specific features
+
+### Automatic rollbacks
+Currently, Deployments do not support automatically rolling back to the last successfully deployed ReplicaSet in case of a failure.
+
+### Triggers
+Deployments have an implicit ConfigChange trigger in that every change in the pod template of a deployment automatically triggers a new rollout. If you do not want new rollouts on pod template changes, pause the deployment:
+
+$ oc rollout pause deployments/<name>
+
+### Lifecycle hooks
+Deployments do not yet support any lifecycle hooks.
+
+### Custom strategies
+Deployments do not support user-specified Custom deployment strategies yet.
+
+## Deployments-specific features
+
+### Rollover
+The deployment process for Deployments is driven by a controller loop, in contrast to DeploymentConfigs which use deployer pods for every new rollout. This means that a Deployment can have as many active ReplicaSets as possible, and eventually the deployment controller will scale down all old ReplicaSets and scale up the newest one.
+
+DeploymentConfigs can have at most one deployer pod running, otherwise multiple deployers end up conflicting while trying to scale up what they think should be the newest ReplicationController. Because of this, only two ReplicationControllers can be active at any point in time. Ultimately, this translates to faster rapid rollouts for Deployments.
+
+### Proportional scaling
+Because the Deployment controller is the sole source of truth for the sizes of new and old ReplicaSets owned by a Deployment, it is able to scale ongoing rollouts. Additional replicas are distributed proportionally based on the size of each ReplicaSet.
+
+DeploymentConfigs cannot be scaled when a rollout is ongoing because the DeploymentConfig controller will end up having issues with the deployer process about the size of the new ReplicationController.
+
+### Pausing mid-rollout
+Deployments can be paused at any point in time, meaning you can also pause ongoing rollouts. On the other hand, you cannot pause deployer pods currently, so if you try to pause a DeploymentConfig in the middle of a rollout, the deployer process will not be affected and will continue until it finishes.
