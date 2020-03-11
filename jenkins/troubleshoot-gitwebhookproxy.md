@@ -8,3 +8,7 @@
 4. Verify that your pipeline configuration and github has same secret.
 5. Verify that your pipeline configuration has `(PR-\d+|master)` regex set. i.e. this regex triggers only PR and master branch.
 6. Verify from the gitwebhookproxy logs that github event is supported. If it is not then add that event payload in gitwebhookproxy as well.
+
+# Sample Jenkins Configuration
+
+![Jenkins Configuration for Github plugin](github-plugin-config.png)
