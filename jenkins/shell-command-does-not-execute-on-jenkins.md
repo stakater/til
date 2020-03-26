@@ -8,4 +8,6 @@ process apparently never started in /home/jenkins/agent/workspace/_<JENKINS_SLAV
 
 
 # Solution
-In the new kubernetes plugin in Jenkins, the default jnlp container that is created has working directory `/home/jenkins/agent`. change it to `/home/jenkins` form the Global Settings in Manage Jenkins
+- In the new kubernetes plugin in Jenkins, the default jnlp container that is created has working directory `/home/jenkins/agent`. change it to `/home/jenkins` form the Global Settings in Manage Jenkins
+
+- Change the `builderImage`. some old pipeline-tool versions show this error
