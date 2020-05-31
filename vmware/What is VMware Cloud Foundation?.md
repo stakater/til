@@ -1,0 +1,5 @@
+# VMware Cloud Foundation
+
+VMware Cloud Foundation is an integrated software platform incorporating a full range of software-defined services (vSphere 7, vSAN 7, NSX SDN) into a single lifecycle managed deliverable that can be deployed in an on-premises private cloud or run as a service in a public cloud. VMware Cloud Foundation offers a simple path to the creation of a hybrid cloud environment by using a common platform for private and public clouds, eliminating any problems with compatibility and making for a consistent operational experience. The same tools and processes can be used in public and private clouds. The unified SDDC platform is an enterprise-ready cloud infrastructure for public and private clouds.
+
+Deploying OpenShift 4 to a VCF 4 workload domain provides a solid foundation for hosting your containerized applications that provides compute, storage, and network resources on a single managed infrastructure automatically deployed, managed, and updated alongside traditional virtual machine hosted workloads.
