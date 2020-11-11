@@ -18,3 +18,7 @@ GET _cat/indices?v
 ```
 Results would be shown on the right column and `store.size` would br the total size of the index
 
+TO delete:
+```
+DELETE /my-index-000001
+```
