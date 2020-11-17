@@ -22,3 +22,15 @@ TO delete:
 ```
 DELETE /my-index-000001
 ```
+
+Find the namespace distribution for a specific index:
+```
+POST /.operations.2020.11.16/_search?size=0
+{
+  "aggs": {
+    "namespaces": {
+       "terms": { "field": "kubernetes.namespace_name" } 
+    }
+  }
+}
+```
